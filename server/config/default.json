@@ -1,3 +1,4 @@
 {
-    "mongouri": "mongodb+srv://tydusgg:123@blogx.qndi7.mongodb.net/myFirstDatabase?retryWrites=true&w=majority"
+    "mongouri": "mongodb+srv://tydusgg:123@blogx.qndi7.mongodb.net/myFirstDatabase?retryWrites=true&w=majority",
+    "jwtSecretKey": "luzik22812345aboba"
 }
