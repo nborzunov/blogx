@@ -14,4 +14,4 @@ const PostSchema = new mongoose.Schema({
   comments: [{ type: ObjectId, ref: "comment" }],
 });
 
-mongoose.model.exports = Post = mongoose.model("post", PostSchema);
+module.exports = Post = mongoose.model("post", PostSchema);
