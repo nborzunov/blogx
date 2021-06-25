@@ -8,8 +8,8 @@ const ProfileSchema = new mongoose.Schema({
   age: Number,
   country: String,
   city: String,
+  avatar: String,
   following: [{ type: ObjectId, ref: "user" }],
-  followers: [{ type: ObjectId, ref: "user" }],
   friends: [{ type: ObjectId, ref: "user" }],
 });
 

@@ -7,8 +7,7 @@ const bcrypt = require("bcryptjs");
 const config = require("config");
 const { check, validationResult } = require("express-validator");
 
-const UserSchema = require("../models/User");
-const User = mongoose.model("user", UserSchema);
+const User = require("../models/User");
 
 // get user by id
 router.get("/", auth, async (req, res) => {
