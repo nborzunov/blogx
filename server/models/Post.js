@@ -2,7 +2,7 @@ const mongoose = require("mongoose");
 
 const PostSchema = new mongoose.Schema({
   author: {
-    type: ObjectId,
+    type: mongoose.ObjectId,
     ref: "user",
   },
   content: String,
@@ -10,8 +10,8 @@ const PostSchema = new mongoose.Schema({
     type: Date,
     default: Date.now,
   },
-  liked: [{ type: ObjectId, ref: "user" }],
-  comments: [{ type: ObjectId, ref: "comment" }],
+  liked: [{ type: mongoose.ObjectId, ref: "user" }],
+  comments: [{ type: mongoose.ObjectId, ref: "comment" }],
 });
 
 module.exports = Post = mongoose.model("post", PostSchema);
