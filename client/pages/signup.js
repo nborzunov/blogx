@@ -10,7 +10,10 @@ import Typography from '@material-ui/core/Typography';
 import LockOutlinedIcon from '@material-ui/icons/LockOutlined';
 import { useState } from 'react';
 import Header from '../components/UI/Header';
-import Footer from '../components/UI/Footer'
+import Footer from '../components/UI/Footer';
+import axios from 'axios';
+import { useRouter } from 'next/router';
+import setAuthToken from '../utils/setAuthToken';
 
 const useStyles = makeStyles((theme) => ({
     paper: {
@@ -34,18 +37,54 @@ const useStyles = makeStyles((theme) => ({
 
 const Signup = () => {
     const classes = useStyles();
+    const router = useRouter();
 
     const [formData, setFormData] = useState({
         name: '',
         surname: '',
-        email: '',
-        password: '',
+        email: {
+            value: '',
+            error: null,
+        },
+        password: {
+            value: '',
+            error: '',
+        },
     });
 
-    const handleFormSubmit = (e) => {
+    async function handleFormSubmit(e) {
         e.preventDefault();
-        console.log(formData);
-    };
+        console.log('123');
+        try {
+            const body = JSON.stringify({
+                name: formData.name,
+                surname: formData.surname,
+                email: formData.email.value,
+                password: formData.password.value,
+            });
+
+            const config = {
+                headers: { 'Content-Type': 'application/json' },
+            };
+            const res = await axios.post(
+                'http://localhost:4000/auth/signup',
+                body,
+                config
+            );
+
+            if (res.status !== 200) {
+                console.error(res);
+            } else {
+                document.cookie = `token=${res.data.token}`;
+
+                setAuthToken(res.data.token);
+
+                router.push('/');
+            }
+        } catch (err) {
+            console.log(err.message);
+        }
+    }
     return (
         <>
             <Container component="main" maxWidth="xl" className="wrapper">
@@ -55,14 +94,14 @@ const Signup = () => {
                     <div className={classes.paper}>
                         <Avatar className={classes.avatar}>
                             <LockOutlinedIcon />
-                        </Avatar>
+                        </Avatar>{' '}
                         <Typography component="h1" variant="h5">
-                            Sign up
-                        </Typography>
+                            Sign up{' '}
+                        </Typography>{' '}
                         <form
                             className={classes.form}
                             noValidate
-                            onSubmit={handleFormSubmit}
+                            onSubmit={(e) => handleFormSubmit(e)}
                         >
                             <Grid container spacing={2}>
                                 <Grid item xs={12} sm={6}>
@@ -82,8 +121,8 @@ const Signup = () => {
                                                 name: e.currentTarget.value,
                                             });
                                         }}
-                                    />
-                                </Grid>
+                                    />{' '}
+                                </Grid>{' '}
                                 <Grid item xs={12} sm={6}>
                                     <TextField
                                         variant="outlined"
@@ -100,8 +139,8 @@ const Signup = () => {
                                                 surname: e.currentTarget.value,
                                             });
                                         }}
-                                    />
-                                </Grid>
+                                    />{' '}
+                                </Grid>{' '}
                                 <Grid item xs={12}>
                                     <TextField
                                         variant="outlined"
@@ -112,15 +151,19 @@ const Signup = () => {
                                         label="Email Address"
                                         name="email"
                                         autoComplete="email"
-                                        value={formData.email}
+                                        value={formData.email.value}
                                         onChange={(e) => {
                                             setFormData({
                                                 ...formData,
-                                                email: e.currentTarget.value,
+                                                email: {
+                                                    ...formData.email,
+                                                    value: e.currentTarget
+                                                        .value,
+                                                },
                                             });
                                         }}
-                                    />
-                                </Grid>
+                                    />{' '}
+                                </Grid>{' '}
                                 <Grid item xs={12}>
                                     <TextField
                                         variant="outlined"
@@ -132,22 +175,24 @@ const Signup = () => {
                                         type="password"
                                         id="password"
                                         autoComplete="current-password"
-                                        value={formData.password}
+                                        value={formData.password.value}
                                         onChange={(e) => {
                                             setFormData({
                                                 ...formData,
-                                                password: e.currentTarget.value,
+                                                password: {
+                                                    ...formData.password,
+                                                    value: e.currentTarget
+                                                        .value,
+                                                },
                                             });
                                         }}
-                                    />
-                                </Grid>
+                                    />{' '}
+                                </Grid>{' '}
                             </Grid>
-
                             {/* <FormControlLabel
-                        control={<Checkbox value="remember" color="primary" />}
-                        label="Remember me"
-                    /> */}
-
+                                    control={<Checkbox value="remember" color="primary" />}
+                                    label="Remember me"
+                                /> */}
                             <Button
                                 type="submit"
                                 fullWidth
@@ -155,25 +200,29 @@ const Signup = () => {
                                 color="primary"
                                 className={classes.submit}
                             >
-                                Sign Up
-                            </Button>
+                                Sign Up{' '}
+                            </Button>{' '}
                             <Grid container>
+                                {' '}
                                 {/* <Grid item xs>
-                            <UILink href="#" variant="body2">
-                                Forgot password?
-                            </UILink>
-                        </Grid> */}
+                                        <UILink href="#" variant="body2">
+                                            Forgot password?
+                                        </UILink>
+                                    </Grid> */}{' '}
                                 <Grid item>
                                     <Link variant="body2" href="/signup">
-                                        {'Already have an account? Sign in'}
-                                    </Link>
-                                </Grid>
-                            </Grid>
-                        </form>
-                    </div>
-                </Container>
-                <Footer/>
-            </Container>
+                                        {' '}
+                                        {
+                                            'Already have an account? Sign in'
+                                        }{' '}
+                                    </Link>{' '}
+                                </Grid>{' '}
+                            </Grid>{' '}
+                        </form>{' '}
+                    </div>{' '}
+                </Container>{' '}
+                <Footer />
+            </Container>{' '}
             <style jsx>
                 {`
                     .wrapper {
