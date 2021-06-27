@@ -1,15 +1,12 @@
 import Link from 'next/link';
-
+import Header from '../components/UI/Header';
+import Footer from '../components/UI/Footer';
 const MainPage = () => {
     return (
-        <div>
-            <Link href="/login">
-                <a>login</a>
-            </Link>
-            <Link href="/signup">
-                <a>signup</a>
-            </Link>
-        </div>
+        <>
+            <Header />
+            <Footer />
+        </>
     );
 };
 
