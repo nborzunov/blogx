@@ -64,6 +64,7 @@ router.post(
         { expiresIn: 360000 },
         (err, token) => {
           if (err) throw err;
+
           res.json({ token });
         }
       );
@@ -77,7 +78,11 @@ router.post(
 router.post(
   "/signup",
   [
-    check("username", "Username is required")
+    check("name", "First name is required")
+      .not()
+      .isEmpty()
+      .isLength({ min: 4, max: 40 }),
+    check("surname", "Second name is required")
       .not()
       .isEmpty()
       .isLength({ min: 4, max: 40 }),
@@ -93,7 +98,7 @@ router.post(
       return res.status(400).json({ errors: errors.array() });
     }
 
-    const { username, email, password } = req.body;
+    const { name, surname, email, password } = req.body;
 
     try {
       let user = await User.findOne({ email });
@@ -105,9 +110,10 @@ router.post(
       }
 
       user = new User({
-        username,
+        name,
+        surname,
         email,
-        password
+        password,
       });
 
       const salt = await bcrypt.genSalt(10);
@@ -118,7 +124,7 @@ router.post(
 
       const payload = {
         user: {
-          id: user.id
+          id: user.id,
         },
       };
 
@@ -128,6 +134,7 @@ router.post(
         { expiresIn: 360000 },
         (err, token) => {
           if (err) throw err;
+
           res.json({ token });
         }
       );

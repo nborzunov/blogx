@@ -13,7 +13,7 @@ import { useRouter } from 'next/router';
 import { useState } from 'react';
 import Header from '../components/UI/Header';
 import Footer from '../components/UI/Footer';
-
+import setAuthToken from '../utils/setAuthToken';
 
 const useStyles = makeStyles((theme) => ({
     paper: {
@@ -40,46 +40,47 @@ const Login = ({ props }) => {
     const classes = useStyles();
 
     const [formData, setFormData] = useState({
-        email: '',
-        password: '',
+        email: {
+            value: '',
+            error: null,
+        },
+        password: {
+            value: '',
+            error: null,
+        },
     });
 
-    const handleFormSubmit = (e) => {
+    async function handleFormSubmit(e) {
         e.preventDefault();
-        // console.log(props);
-        // if (loginUser(formData)){
 
-        //     router.push('/');
-        // }
-
-        // fetch('http://localhost:3000/auth/login', {
-        //     method: 'POST',
-        //     headers: { 'Content-Type': 'application/json' },
-        //     body: JSON.stringify(formData),
-        //     mode: 'no-cors'
-        // })
-
-        // fetch('http://localhost:3000/auth/login', {
-        //     method: 'POST',
-        //     headers: { 'Content-Type': 'application/json' },
-        //     body: JSON.stringify(formData),
-        //     mode: 'no-cors',
-        // })
-
-        axios
-            .post('/auth/login/', JSON.stringify(formData), {
-                headers: { 'Content-Type': 'application/json' },
-            })
-            .then((r) => r.json())
-            .then((res) => {
-                if (res.status !== 200) {
-                    console.log(res);
-                } else {
-                    document.cookie = 'authtoken=' + res.token;
-                    router.push('/');
-                }
+        try {
+            const body = JSON.stringify({
+                email: formData.email.value,
+                password: formData.password.value,
             });
-    };
+
+            const config = {
+                headers: { 'Content-Type': 'application/json' },
+            };
+            const res = await axios.post(
+                'http://localhost:4000/auth/login',
+                body,
+                config
+            );
+
+            if (res.status !== 200) {
+                console.log(res.data);
+            } else {
+                document.cookie = `token=${res.data.token}`;
+
+                setAuthToken(res.data.token);
+
+                router.push('/');
+            }
+        } catch (err) {
+            console.log(err.message);
+        }
+    }
 
     return (
         <>
@@ -110,11 +111,14 @@ const Login = ({ props }) => {
                                 name="email"
                                 autoComplete="email"
                                 autoFocus
-                                value={formData.email}
+                                value={formData.email.value}
                                 onChange={(e) => {
                                     setFormData({
                                         ...formData,
-                                        email: e.currentTarget.value,
+                                        email: {
+                                            ...formData.email,
+                                            value: e.currentTarget.value,
+                                        },
                                     });
                                 }}
                             />
@@ -128,11 +132,14 @@ const Login = ({ props }) => {
                                 type="password"
                                 id="password"
                                 autoComplete="current-password"
-                                value={formData.password}
+                                value={formData.password.value}
                                 onChange={(e) => {
                                     setFormData({
                                         ...formData,
-                                        password: e.currentTarget.value,
+                                        password: {
+                                            ...formData.password,
+                                            value: e.currentTarget.value,
+                                        },
                                     });
                                 }}
                             />
@@ -166,7 +173,7 @@ const Login = ({ props }) => {
                         </form>
                     </div>
                 </Container>
-                <Footer/>
+                <Footer />
             </Container>
             <style jsx>
                 {`
