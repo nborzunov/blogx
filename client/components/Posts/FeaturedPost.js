@@ -21,12 +21,12 @@ const useStyles = makeStyles({
     },
 });
 
-export default function FeaturedPost({post}) {
+export default function FeaturedPost({post, size = 6}) {
     const classes = useStyles();
     const router = useRouter();
 
     return (
-        <Grid item xs={12} md={6}>
+        <Grid item xs={12} md={size}>
             <CardActionArea component="a" onClick={e => router.push(`/post/${post.id}`)}>
                 <Card className={classes.card}>
                     <div className={classes.cardDetails}>
