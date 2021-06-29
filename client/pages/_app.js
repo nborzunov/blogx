@@ -1,12 +1,12 @@
-import React from 'react';
-import PropTypes from 'prop-types';
-import Head from 'next/head';
-import { ThemeProvider } from '@material-ui/core/styles';
 import CssBaseline from '@material-ui/core/CssBaseline';
-import theme from '../src/theme';
-import { Provider } from 'react-redux';
-import store from './../store/store';
+import { ThemeProvider } from '@material-ui/core/styles';
+import axios from 'axios';
 import { createWrapper } from 'next-redux-wrapper';
+import Head from 'next/head';
+import React from 'react';
+import { Provider } from 'react-redux';
+import theme from '../src/theme';
+import store from './../store/store';
 
 function MyApp(props) {
     const { Component, pageProps } = props;
@@ -19,6 +19,8 @@ function MyApp(props) {
         }
     }, []);
 
+    axios.defaults.baseURL = 'http://localhost:4000/';
+    axios.defaults.headers.post['Content-Type'] = 'application/json';
     return (
         <React.Fragment>
             <Head>

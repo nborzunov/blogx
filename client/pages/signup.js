@@ -8,12 +8,13 @@ import { makeStyles } from '@material-ui/core/styles';
 import TextField from '@material-ui/core/TextField';
 import Typography from '@material-ui/core/Typography';
 import LockOutlinedIcon from '@material-ui/icons/LockOutlined';
-import { useState } from 'react';
-import Header from '../components/UI/Header';
-import Footer from '../components/UI/Footer';
-import axios from 'axios';
+import Head from 'next/head';
 import { useRouter } from 'next/router';
-import setAuthToken from '../utils/setAuthToken';
+import { useEffect, useState } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
+import Footer from '../components/UI/Footer';
+import Header from '../components/UI/Header';
+import { signup } from '../store/actions/auth';
 
 const useStyles = makeStyles((theme) => ({
     paper: {
@@ -38,6 +39,15 @@ const useStyles = makeStyles((theme) => ({
 const Signup = () => {
     const classes = useStyles();
     const router = useRouter();
+    const dispatch = useDispatch();
+
+    const { isAuth } = useSelector((state) => state.auth);
+
+    useEffect(() => {
+        if (isAuth) {
+            router.push('/');
+        }
+    }, [isAuth]);
 
     const [formData, setFormData] = useState({
         name: '',
@@ -54,39 +64,14 @@ const Signup = () => {
 
     async function handleFormSubmit(e) {
         e.preventDefault();
-        console.log('123');
-        try {
-            const body = JSON.stringify({
-                name: formData.name,
-                surname: formData.surname,
-                email: formData.email.value,
-                password: formData.password.value,
-            });
 
-            const config = {
-                headers: { 'Content-Type': 'application/json' },
-            };
-            const res = await axios.post(
-                'http://localhost:4000/auth/signup',
-                body,
-                config
-            );
-
-            if (res.status !== 200) {
-                console.error(res);
-            } else {
-                document.cookie = `token=${res.data.token}`;
-
-                setAuthToken(res.data.token);
-
-                router.push('/');
-            }
-        } catch (err) {
-            console.log(err.message);
-        }
+        dispatch(signup(formData));
     }
     return (
         <>
+            <Head>
+                <title>BlogX | Signup</title>
+            </Head>
             <Container component="main" maxWidth="xl" className="wrapper">
                 <Header />
                 <Container component="main" maxWidth="xs">
