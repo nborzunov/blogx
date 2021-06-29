@@ -45,17 +45,6 @@ function Posts({ props }) {
                     </Grid>
                 </main>
                 <Footer />
-                {/* <main>
-                    <MainFeaturedPost post={posts[0]} />
-                    <Grid container spacing={4}>
-                        {posts.slice(1, posts.length - 1).map((post) => (
-                            <FeaturedPost key={post.id} post={post} />
-                        ))}
-                    </Grid>
-                    <Grid container spacing={5} className={classes.mainGrid}>
-                        <Main title="From the firehose" posts={posts} />
-                    </Grid>
-                </main> */}
             </Container>
         </>
     );
