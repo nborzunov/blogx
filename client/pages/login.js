@@ -8,12 +8,15 @@ import { makeStyles } from '@material-ui/core/styles';
 import TextField from '@material-ui/core/TextField';
 import Typography from '@material-ui/core/Typography';
 import LockOutlinedIcon from '@material-ui/icons/LockOutlined';
-import axios from 'axios';
+
 import { useRouter } from 'next/router';
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import Header from '../components/UI/Header';
 import Footer from '../components/UI/Footer';
 import setAuthToken from '../utils/setAuthToken';
+import { useDispatch, useSelector } from 'react-redux';
+import Head from 'next/head';
+import { login } from '../store/actions/auth';
 
 const useStyles = makeStyles((theme) => ({
     paper: {
@@ -38,6 +41,15 @@ const useStyles = makeStyles((theme) => ({
 const Login = ({ props }) => {
     const router = useRouter();
     const classes = useStyles();
+    const dispatch = useDispatch();
+
+    const { isAuth } = useSelector((state) => state.auth);
+
+    useEffect(() => {
+        if (isAuth) {
+            router.push('/');
+        }
+    }, [isAuth]);
 
     const [formData, setFormData] = useState({
         email: {
@@ -53,37 +65,14 @@ const Login = ({ props }) => {
     async function handleFormSubmit(e) {
         e.preventDefault();
 
-        try {
-            const body = JSON.stringify({
-                email: formData.email.value,
-                password: formData.password.value,
-            });
-
-            const config = {
-                headers: { 'Content-Type': 'application/json' },
-            };
-            const res = await axios.post(
-                'http://localhost:4000/auth/login',
-                body,
-                config
-            );
-
-            if (res.status !== 200) {
-                console.log(res.data);
-            } else {
-                document.cookie = `token=${res.data.token}`;
-
-                setAuthToken(res.data.token);
-
-                router.push('/');
-            }
-        } catch (err) {
-            console.log(err.message);
-        }
+        dispatch(login(formData));
     }
 
     return (
         <>
+            <Head>
+                <title>BlogX | Login</title>
+            </Head>
             <Container component="main" maxWidth="xl" className="wrapper">
                 <Header />
                 <Container component="main" maxWidth="xs">
