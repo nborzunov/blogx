@@ -51,7 +51,7 @@ const ModalCloseButton = styled.button`
     }
 `;
 
-export default function Modal({ isOpened, onClose, children }) {
+export default function Modal({ isOpened, setModal, children }) {
 
 
     const handleClose = e => {
@@ -59,12 +59,12 @@ export default function Modal({ isOpened, onClose, children }) {
         e.preventDefault()
         e.stopPropagation()
         if(e.target.id !== 'modal')return
-        onClose()
+        setModal(false)
     }
     return (
         <ModalWrapper isOpened={isOpened} onClick={e => handleClose(e)} id='modal'>
             <ModalBody>
-                <ModalCloseButton onClick={onClose}>
+                <ModalCloseButton onClick={_ => setModal(false)}>
                     <CloseIcon />
                 </ModalCloseButton>
 
