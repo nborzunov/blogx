@@ -1,7 +1,7 @@
 import styled from 'styled-components';
 import {COLOR__PRIMARY} from './variables';
 
-const Input = styled.input`
+const TextField = styled.textarea`
     display: block;
     padding: 15px 10px;
     width: 275px;
@@ -10,7 +10,7 @@ const Input = styled.input`
     border-radius: 2px;
     color: #ccc;
     font-size: 1.1rem;
-
+    resize: none;
     ${(props) =>
         props.value &&
         `
@@ -43,7 +43,7 @@ const Input = styled.input`
         color: #444;
 
         border-color: ${COLOR__PRIMARY};
-
+        
         ${(props) =>
             props.error &&
             `
@@ -53,4 +53,4 @@ const Input = styled.input`
     }
 `;
 
-export default Input;
+export default TextField;

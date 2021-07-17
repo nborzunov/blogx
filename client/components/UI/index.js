@@ -7,6 +7,9 @@ import Modal from './Modal';
 import Form from './Form';
 import Error from './Error';
 import Spinner from './Spinner';
+import Avatar from './Avatar';
+import TextField from './TextField';
+import FileUpload from './FileUpload';
 
 export {
     Link,
@@ -17,5 +20,8 @@ export {
     Modal,
     Form,
     Error,
-    Spinner
+    Spinner,
+    Avatar,
+    TextField,
+    FileUpload
 }
