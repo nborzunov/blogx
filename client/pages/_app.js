@@ -7,6 +7,8 @@ import React from 'react';
 import { Provider } from 'react-redux';
 import theme from '../src/theme';
 import store from './../store/store';
+import setAuthToken from '../utils/setAuthToken';
+import '../styles/globals.css';
 
 function MyApp(props) {
     const { Component, pageProps } = props;
@@ -17,10 +19,13 @@ function MyApp(props) {
         if (jssStyles) {
             jssStyles.parentElement.removeChild(jssStyles);
         }
+        if (localStorage.token) {
+            setAuthToken(localStorage.token);
+        }
+        axios.defaults.baseURL = 'http://localhost:4000/';
+        axios.defaults.headers.post['Content-Type'] = 'application/json';
     }, []);
 
-    axios.defaults.baseURL = 'http://localhost:4000/';
-    axios.defaults.headers.post['Content-Type'] = 'application/json';
     return (
         <React.Fragment>
             <Head>
@@ -29,6 +34,7 @@ function MyApp(props) {
                     name="viewport"
                     content="minimum-scale=1, initial-scale=1, width=device-width"
                 />
+                
             </Head>
             <ThemeProvider theme={theme}>
                 <CssBaseline />
