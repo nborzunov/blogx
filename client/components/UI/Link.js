@@ -5,9 +5,13 @@ import {
     LINK_SIZE__MEDIUM,
     LINK_SIZE__SMALL,
     LINK_COLOR__LARGE,
+    LINK_COLOR__MEDIUM,
     LINK_COLOR__SMALL,
-    MARGIN_MIDDLE,
-    PADDING_MIDDLE,
+    MARGIN_LARGE,
+    MARGIN_MEDIUM,
+    MARGIN_SMALL,
+    PADDING_LARGE,
+    PADDING_MEDIUM,
     PADDING_SMALL,
 } from './variables';
 
@@ -25,18 +29,25 @@ const StyledLink = styled.a`
 const LargeLink = styled(StyledLink)`
     color: ${LINK_COLOR__LARGE};
     font-size: ${LINK_SIZE__LARGE};
+    margin: ${MARGIN_LARGE};
+    padding: ${PADDING_LARGE};
     text-transform: uppercase;
-    margin: ${MARGIN_MIDDLE};
-    padding: ${PADDING_MIDDLE};
 `;
 
-const MediumLink = styled.a``;
+const MediumLink = styled.a`
+    color: ${LINK_COLOR__MEDIUM};
+    font-size: ${LINK_SIZE__MEDIUM};
+    margin: ${MARGIN_MEDIUM};
+    padding: ${PADDING_MEDIUM};
+    font-weight: bold;
+
+`;
 
 const SmallLink = styled(StyledLink)`
-    font-size: 1.1em;
     color: ${LINK_COLOR__SMALL};
+    font-size: ${LINK_SIZE__SMALL};
+    margin: ${MARGIN_SMALL};
     padding: ${PADDING_SMALL};
-    text-decoration: none;
 `;
 
 function returnLinkBySize(size, title, onClick) {
@@ -44,12 +55,12 @@ function returnLinkBySize(size, title, onClick) {
         case 'large':
             return <LargeLink onClick={onClick}>{title}</LargeLink>;
         case 'medium':
-            return <LargeLink onClick={onClick}>{title}</LargeLink>;
+            return <MediumLink onClick={onClick}>{title}</MediumLink>;
         case 'small':
             return <SmallLink onClick={onClick}>{title}</SmallLink>;
     }
 }
-export default function UILink({ href, size, title, onClick }) {
+export default function UILink({ href, size, title, as, onClick }) {
 
     if(!href) {
         return(
@@ -60,7 +71,7 @@ export default function UILink({ href, size, title, onClick }) {
         )
     }
     return (
-        <Link href={href} passHref>
+        <Link href={href} as={as} passHref>
             {returnLinkBySize(size, title, onClick)}
         </Link>
         
