@@ -9,7 +9,7 @@ import { Button, Heading, Input, Link, Form, Error, Spinner } from '../UI';
 import { useFormik } from 'formik';
 import * as Yup from 'yup';
 
-export default function LoginForm({ setModal }) {
+export default function LoginForm({ onClose }) {
     const router = useRouter();
     const dispatch = useDispatch();
 
@@ -19,7 +19,7 @@ export default function LoginForm({ setModal }) {
 
     useEffect(() => {
         if (isAuth) {
-            setModal(false);
+            router.push(router.pathname)
         }
     }, [isAuth]);
 
@@ -51,7 +51,7 @@ export default function LoginForm({ setModal }) {
             const result = await dispatch(login(values));
 
             if (result === 'ok') {
-                setModal(false);
+                onClose()
             } else {
                 if (result.errors[0].field === 'email') {
                     setErrors({
@@ -80,6 +80,7 @@ export default function LoginForm({ setModal }) {
                     type="text"
                     placeholder="Email"
                     name="email"
+                    withIcon='true'
                     value={values.email}
                     onChange={handleChange}
                     onBlur={handleBlur}
@@ -96,6 +97,7 @@ export default function LoginForm({ setModal }) {
                     type="password"
                     placeholder="Password"
                     name="password"
+                    withIcon='true'
                     value={values.password}
                     onChange={handleChange}
                     onBlur={handleBlur}

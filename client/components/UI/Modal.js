@@ -1,6 +1,6 @@
 import styled from 'styled-components';
 import CloseIcon from '@material-ui/icons/Close';
-import { FORM_COLOR__PRIMARY } from './variables';
+import { COLOR__PRIMARY } from './variables';
 
 const ModalWrapper = styled.div`
     position: fixed;
@@ -13,18 +13,15 @@ const ModalWrapper = styled.div`
     display: none;
     justify-content: center;
     align-items: center;
-    ${(props) =>
-        props.isOpened &&
-        `
     height: 100%;
     display: flex;
-    `}
+    z-index: 10000;
 `;
 
 const ModalBody = styled.div`
     display: inline-block;
     position: relative;
-    z-index: 1000;
+    z-index: 10100;
 `;
 
 const ModalCloseButton = styled.button`
@@ -33,7 +30,7 @@ const ModalCloseButton = styled.button`
     height: 32px;
     right: 16px;
     top: 16px;
-    z-index: 1010;
+    z-index: 10200;
     display: flex;
     justify-content: center;
     align-items: center;
@@ -41,7 +38,7 @@ const ModalCloseButton = styled.button`
     transition: 0.2s ease;
     border: none;
 
-    background-color: ${FORM_COLOR__PRIMARY};
+    background-color: ${COLOR__PRIMARY};
     &:hover{
         opacity: 0.8;
     }
@@ -51,20 +48,18 @@ const ModalCloseButton = styled.button`
     }
 `;
 
-export default function Modal({ isOpened, setModal, children }) {
-
-
+export default function Modal({onClose, children }) {
     const handleClose = e => {
-
         e.preventDefault()
         e.stopPropagation()
-        if(e.target.id !== 'modal')return
-        setModal(false)
-    }
+        if(e.target.id !== 'modal') return
+        onClose()
+    };
+
     return (
-        <ModalWrapper isOpened={isOpened} onClick={e => handleClose(e)} id='modal'>
+        <ModalWrapper onClick={e => handleClose(e)} id='modal'>
             <ModalBody>
-                <ModalCloseButton onClick={_ => setModal(false)}>
+                <ModalCloseButton onClick={onClose}>
                     <CloseIcon />
                 </ModalCloseButton>
 

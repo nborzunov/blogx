@@ -10,7 +10,7 @@ import * as Yup from 'yup';
 import { signup } from '../../store/actions/auth';
 import { Button, Form, Heading, Input, Link, Error, Spinner } from '../UI';
 
-export default function SignupForm({ setLoginModal, setSignupModal }) {
+export default function SignupForm({ onClose, onOpenLoginModal }) {
     const router = useRouter();
     const dispatch = useDispatch();
 
@@ -20,7 +20,7 @@ export default function SignupForm({ setLoginModal, setSignupModal }) {
 
     useEffect(() => {
         if (isAuth) {
-            setSignupModal(false);
+            router.push(router.pathname);
         }
     }, [isAuth]);
 
@@ -62,7 +62,7 @@ export default function SignupForm({ setLoginModal, setSignupModal }) {
             const result = await dispatch(signup(values));
 
             if (result === 'ok') {
-                setSignupModal(false);
+                onClose();
             } else {
                 if (result.errors[0].field === 'name') {
                     setErrors({
@@ -90,8 +90,7 @@ export default function SignupForm({ setLoginModal, setSignupModal }) {
     });
 
     function handleLoginClick() {
-        setSignupModal(false);
-        setLoginModal(true);
+        router.push(`${router.pathname}?modal=login`);
     }
 
     return (
@@ -108,6 +107,7 @@ export default function SignupForm({ setLoginModal, setSignupModal }) {
                     type="text"
                     name="firstName"
                     placeholder="Name"
+                    withIcon="true"
                     value={values.firstName}
                     onChange={handleChange}
                     onBlur={handleBlur}
@@ -128,6 +128,7 @@ export default function SignupForm({ setLoginModal, setSignupModal }) {
                     type="text"
                     name="lastName"
                     placeholder="Surname"
+                    withIcon="true"
                     value={values.lastName}
                     onChange={handleChange}
                     onBlur={handleBlur}
@@ -148,6 +149,7 @@ export default function SignupForm({ setLoginModal, setSignupModal }) {
                     type="text"
                     placeholder="Email"
                     name="email"
+                    withIcon="true"
                     value={values.email}
                     onChange={handleChange}
                     onBlur={handleBlur}
@@ -164,6 +166,7 @@ export default function SignupForm({ setLoginModal, setSignupModal }) {
                     type="password"
                     placeholder="Password"
                     name="password"
+                    withIcon="true"
                     value={values.password}
                     onChange={handleChange}
                     onBlur={handleBlur}
