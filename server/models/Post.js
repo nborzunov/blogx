@@ -5,10 +5,21 @@ const PostSchema = new mongoose.Schema({
     type: mongoose.ObjectId,
     ref: "user",
   },
-  content: String,
+  title: {
+    type: String,
+    required: true,
+  },
+  subtitle: String,
+  keywords: String,
+  previewImage: String,
+  body: String,
   date: {
     type: Date,
     default: Date.now,
+  },
+  views: {
+    type: Number,
+    default: 0,
   },
   liked: [{ type: mongoose.ObjectId, ref: "user" }],
   comments: [{ type: mongoose.ObjectId, ref: "comment" }],
