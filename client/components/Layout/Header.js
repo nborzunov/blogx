@@ -1,58 +1,90 @@
-import React, {useState} from 'react';
+import React, { useState } from 'react';
 
-import styles from '../../styles/Header.module.css';
 import { withRouter } from 'next/router';
 import { useSelector } from 'react-redux';
-import {Link, Modal} from '../UI';
-import LoginForm from '../Auth/LoginForm'
-import SignupForm from '../Auth/SignupForm'
+import { Link, Modal, Container } from '../UI';
+import LoginForm from '../Auth/LoginForm';
+import SignupForm from '../Auth/SignupForm';
+import styled from 'styled-components';
+
+const HeaderWrapper = styled.div`
+    width: 1000px;
+    height: 64px;
+    padding: 16px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    max-width: 1200px;
+    margin: auto;
+`;
 
 function Header({ router }) {
     const { isAuth, name, surname, avatar, id } = useSelector(
         (state) => state.auth
     );
 
-    const [isLoginModalOpened, setLoginModalOpened] = useState(false);
-    const [isSignupModalOpened, setSignupModalOpened] = useState(false);
-    
-    const onToggleLoginModal = _ => setLoginModalOpened(!isLoginModalOpened);
-    const onToggleSignupModal = _ => setSignupModalOpened(!isSignupModalOpened);
+    function onCloseModal() {
+        router.push(router.pathname);
+    }
+    function onOpenLoginModal() {
+        router.push(`${router.pathname}?modal=login`);
+    }
+
 
     return (
-        <div className={styles.header}>
-            <Modal isOpened={isLoginModalOpened} setModal={setLoginModalOpened}>
-                <LoginForm setModal={setLoginModalOpened}/>
-            </Modal>
-
-            <Modal isOpened={isSignupModalOpened} setModal={setSignupModalOpened}>
-                <SignupForm setLoginModal={setLoginModalOpened} setSignupModal={setSignupModalOpened}/>
-            </Modal>
-
-
-            <Link size="large" title="back" onClick={() => router.back()} />
-
-            <Link href="/posts" size="large" title="posts" />
-
-            <div>
-                {!isAuth && (
-                    <>
-                        <Link size="large" title="login" onClick={onToggleLoginModal} />
-
-                        <Link size="large" title="signup" onClick={onToggleSignupModal} />
-                    </>
+        <Container maxWidth="md">
+            {router.query.modal && (
+                <Modal onClose={onCloseModal}>
+                {router.query.modal.includes('login') && (
+                    <LoginForm onClose={onCloseModal} />
                 )}
-                {isAuth && (
-                    <>
-                        <Link
-                            href={`/profile/${id}`}
-                            size="large"
-                            title={`${name} ${surname}`}
-                        />
-                        <Link href={`/logout`} size="large" title="logout" />
-                    </>
+                {router.query.modal.includes('signup') && (
+                    <SignupForm
+                        onOpenLoginModal={onOpenLoginModal}
+                        onClose={onCloseModal}
+                    />
                 )}
-            </div>
-        </div>
+            </Modal>
+            )}
+            <HeaderWrapper>
+                <Link size="large" title="back" onClick={() => router.back()} />
+
+                <Link href="/posts" size="large" title="posts" />
+
+                <div>
+                    {!isAuth && (
+                        <>
+                            <Link
+                                size="large"
+                                title="login"
+                                href={`${router.pathname}?modal=login`}
+                            />
+
+                            <Link
+                                size="large"
+                                title="signup"
+                                href={`${router.pathname}?modal=signup`}
+                            />
+                        </>
+                    )}
+                    {isAuth && (
+                        <>
+                            <Link
+                                href={`/profile/${id}`}
+                                size="large"
+                                title={`${name} ${surname}`}
+                            />
+
+                            <Link
+                                href={`/logout`}
+                                size="large"
+                                title="logout"
+                            />
+                        </>
+                    )}
+                </div>
+            </HeaderWrapper>
+        </Container>
     );
 }
 
