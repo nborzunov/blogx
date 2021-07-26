@@ -1,4 +1,25 @@
 {
-    "mongouri": "mongodb+srv://tydusgg:123@blogx.qndi7.mongodb.net/myFirstDatabase?retryWrites=true&w=majority",
-    "jwtSecretKey": "luzik22812345aboba"
+    "mongouri": "mongodb+srv://tydusgg:123@blogx.qndi7.mongodb.net/blogx?retryWrites=true&w=majority",
+    "jwtSecretKey": "luzik22812345aboba",
+    "GOOGLE_ANALYTICS_VIEW_ID": "247524071",
+    "GOOGLE_CLIENT_EMAIL": "ga-service@unique-antonym-320513.iam.gserviceaccount.com",
+    "GOOGLE_CLIENT_ID": "110472378169274061511",
+    "GOOGLE_PRIVATE_KEY": "-----BEGIN PRIVATE KEY-----\nMIIEvQIBADANBgkqhkiG9w0BAQEFAASCBKcwggSjAgEAAoIBAQC6ZIwA7jyF0lEu\nAvEKuri0CeS+Doqhvg8qP5oz7dbXNIzsOQGYMlOIWcenB7PkAf8CrkLZf8Yrnfd9\n9DVVBRZ9nfYLW8kPxPDJa+vFT+cQKOHBCb3PrpsPM1K9PnQj0u9PuuTxaxfhC3ig\nIt5DAb/MCRkxKHsYkmhfxeIncN/x+xXsvnL3BzLpr9SVoK/Ki4O5DzRaSuBwXLtX\n1iOh/ZWH+CpzdEucrftI/0z+9tG8slEhaGz19DzY+pwISr5zU+RQBmAZVSlCnOPX\nqCh3JMvZAsrlrxZrMyzDOVheiJNvV4lMn5OpnSySas2xYWdbtdUrsfOVa4zX2G0H\nucjjJDeFAgMBAAECggEAFEtBQRKvTUS2aQOR+gCVfqi7GoRbzLt0TD3LjM7e/uRu\nWYPlbAxCswxPZBy/FdqvyLtvdN3oFjSnTzPpIJ4isj+iG9989zYSn2OcMon+FvDU\nj59/Zp7UrCWC4y7rF0Fuo+gt6CkoWuzUT98sAvCsUMtGzmbhbC34pkDV3ER6ZY6o\nhcAtEc/OgM69q41xigDlGdQUGXV7065ZuZc0i4gzMfOCcKhHl0SWz7GTv7EiSXht\nASwNMXHhHpF9T+uLlTwRW4OoTU/Mtx+us7YeebebAY0zbBBf41MEyCL1QJ9jSo++\nKpbFTnHKseGwMGthm/uE6TfeO2g9TaUpX/fJ1+BhiwKBgQD3o8VoxMMUJCxbQh0t\nitsuIipSFQlqTE8UpMqFHiUuLc31ZTrg/r8Dsb4FY2n5A9xHRiIaRfSCosP/h1n4\n3+EAcDUNILFkobE2N0PieCk32w8GipvnNOmxJrqp8sVnavIkeSr3JzPZKYn87Y+u\nEZfsJCG80I0iYDnTobiAgBihMwKBgQDAr3K9q9bvchvcseJK2061mygxDhLvz8Wh\nrcGL3lF2XH1R8s5wwAvGBEVoWocEbzDl1SNCE5vTYZ7bKoAHQbKfSuRT2fF+mXrV\nYcr26UGerX2gCe22cW79CCcp2ktT/GTv7U6fFbf7JWpv237Y1IsfoDEbHa7oQYlJ\nnxRSf480ZwKBgFJKd8Uy7Wh6BMtmku+ZXvBbphiUqQZLyVOg1zOZKt3HltNfCkvO\nG4eMvwpnWMXJBKAirB5y9KeckukM/1b2fnx4zQhJvukj2hGcF9DgAUJwZvPTh68z\nJB0cM5dZ90NAhKqeISr0OgSGCzajcsVzTzrHXvaxjtTHiS/MY9U/u++FAoGAVFAx\nUAeSXGI9CNwZnhHKpjLHanezF5Z97xo997sHQFiGScaKSNHwFOynhlsee3VAG0Gh\nVPeJlvw/a710GjjINWWq9XoHbxMvqZFKI7K7kPhvYQkXKF8IZtYbdPfdQFnPvSDE\n5120jMO5iEqufai7W9JXynq5n02WCk3+sX65pf8CgYEAggM3r/dE3J/p0ITsKltu\nAYneLvfhsvi0oUvbVnjcEX/WAOdClEGyHJ96JM65AbtIVeA7I5zmkHKeH2Tjyzzr\nzI7xnCyme6/1A5MCrHY1SatIrJGMVpWNptcn0fFSHiqI9c86BTZPyIAWudfXsogw\nz2thNxVgosZtWSkABDNladI=\n-----END PRIVATE KEY-----\n",
+    "FirebaseApiKey": "AIzaSyCcEX3MOCq3_Ez-dCYgi61ZvJnfOQjHm18",
+    "FirebaseAuthDomain": "blogx-320513.firebaseapp.com",
+    "FirebaseProjectId": "blogx-320513",
+    "FirebaseStorageBucket": "blogx-320513.appspot.com",
+    "FirebaseMessagingSenderId": "105844503498",
+    "FirebaseAppId": "1:105844503498:web:41d48072e3fbccc303d533",
+    "type": "service_account",
+    "project_id": "blogx-320513",
+    "private_key_id": "53a0127fcaa697dbf384cd4738ac87c36b42e49c",
+    "private_key": "-----BEGIN PRIVATE KEY-----\nMIIEvgIBADANBgkqhkiG9w0BAQEFAASCBKgwggSkAgEAAoIBAQDaLqwlv+DB8y1q\n1TO+ch62Pug3Xg8gKGwdf0ZInA6Fa3vumh2LGpIAVcXNhtyCFDgO5EmEnZ6qUPaX\ncwlkgPbqEvBqn/CqKIuCtWWhB5iIWvC1hUYDGCKcwdrcBRT6dcXiOasicGbmTLAc\nxzgLtCy6lNySFIB7PaAFEBdutVPGEAODIUFD8Tlen9IBWKi6Ecg0x0xXyQlLyPpR\nazRIz3LKg/CRge2lWE6igEqWstI0urZOsgEFyGwd4neSHbN8bv9aVaL/N5RuDGTx\nkjBS7E7kfkdj61JO6rYU39/Fqet7QHOdHeorLcaQQTE/De3zApkB57MNr2O3+EoZ\nBaQhBD57AgMBAAECggEAQt9hRiS8h9W4CvGT7YBe5276j9XVfv7EvHnBGgoy7TPX\nhXdZLMSVEWM4wFjgh0IZOH9CBVKmSf+MxTiuHU7l3zK024lwI0dQE1zz7Fo+pzRw\naMKThelE2pUUNrGcD3Q/laolSOX4tAe3RurMw9GSkBGGVYPRKXTm8gZPmFAdgCvh\nbAX9QZ9jKB54bZK9lRQL1FdEJFafiFgdSBf4P8l2AX1yX3y+5aIaPcM8QxtCPCBn\nK4CzFnVZ30pIf/uRTlH2PXWMwaMtlXpsCP1ytQ1QZblP+W18pZXsxafZDDHLDw4g\nBY5hE9opz+DGDKc+ISl9uBHjzM+JmMQn7MdFaZcZCQKBgQDyT3XgyBIst2WtkD20\nN+HqkRjmyNAImbTqZEonDpoSwr77bs4YLhFoade0V31QAlj8ZIa4rogd4yxwbH9l\nMLHyYWEUUZjllk4OX7BPN2V9APP3yvOAU/TT3GDCL6J6fCY2R9P0zhq+7vHePZWl\nIvg3xju56QxNyvIrZwQ9jeBinwKBgQDmgj9GIhCdp4ZmGern+F89DY/UQAKm6R0n\nYulAaaJ74/1XW9W3fGM04em5WpPj9JaF7kzLEpCuasgTryglt/Y9ulGGsp3WyeCa\nDAuo7FINOh4m1LvyAagmaNDmtRoyun8FyJ8/7dY0TJ1itt9J6pEapYU0twrSOQ+k\n3vP6bRqSpQKBgQCvpeAqQH3EQnGHXl8MS9INan7llL4Q7fMSUf7azx/q55bvxoPJ\nTWO7D7aYeS9Sl1EQLILoT0RGfg4RtOSoYqMrs2FfDENMcidFDiJNWjfMZKt1fX4E\nEVgRV9ggC825AlPk1y6Tb/A9ZhKYaoYWvgG21JEpFAGiRrJDuhp90GHOuwKBgQCg\nsfxacDUVM0zGsRrKTKRYc7PpTBaNNcZVRudFOF9F71MWK7d6CwU+QKAnz7V6HXEy\nPUbb6z1h2p9Q2bMrWGwZ7GIZfTv8GRCzU+JtCRLKldGfUH8V34HSBRBdRbPV2Z3j\n8lDSyIOkQiUWRFa1uQkfgnSyo0iv9YeqcKO12YnE4QKBgFAH9MID+CGt9Tdjztq5\nUjwbT2ToKXJ1Z5RmajF9L9yaG5fwmLak8SbKVgmGIsrm6vcWNP6g52FfBbEkP6ie\njQ+lUCBqAPVZGhdHqpvtH3jRZfWTNJ6c/cgIbDTudedPduKnrIbNlTknZyKatmGF\nuK1P0w1nq8Kea/eeIxiyRJ3g\n-----END PRIVATE KEY-----\n",
+    "client_email": "firebase-adminsdk-ws65c@blogx-320513.iam.gserviceaccount.com",
+    "client_id": "114298830142871078633",
+    "auth_uri": "https://accounts.google.com/o/oauth2/auth",
+    "token_uri": "https://oauth2.googleapis.com/token",
+    "auth_provider_x509_cert_url": "https://www.googleapis.com/oauth2/v1/certs",
+    "client_x509_cert_url": "https://www.googleapis.com/robot/v1/metadata/x509/firebase-adminsdk-ws65c%40blogx-320513.iam.gserviceaccount.com",
+    "GCLOUD_STORAGE_BUCKET": "blogx_image_bucket"
 }

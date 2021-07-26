@@ -3,14 +3,25 @@ const mongoose = require("mongoose");
 const ProfileSchema = new mongoose.Schema({
   user: {
     type: mongoose.ObjectId,
-    ref: "user",
+    ref: "User",
+  },
+  fullName: {
+    type: String
   },
   age: Number,
   country: String,
   city: String,
   avatar: String,
-  following: [{ type: mongoose.ObjectId, ref: "user" }],
-  friends: [{ type: mongoose.ObjectId, ref: "user" }],
+  posts: [{ type: mongoose.ObjectId, ref: "Post" }],
+  following: [{ type: mongoose.ObjectId, ref: "User" }],
+  friends: [{ type: mongoose.ObjectId, ref: "User" }],
 });
 
-module.exports = Profile = mongoose.model("profile", ProfileSchema);
+
+ProfileSchema.index({ fullName: "text"});
+
+const Profile = mongoose.model("Profile", ProfileSchema);
+
+Profile.createIndexes();
+
+module.exports = Profile;

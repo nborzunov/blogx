@@ -23,7 +23,6 @@ router.get("/all", async (req, res) => {
 });
 // Get current profile
 router.get("/", auth, async (req, res) => {
-  console.log(req.user.id);
   try {
     const profile = await Profile.findOne({ user: req.user.id }).populate("user", ["name", "avatar"]);
 
@@ -76,18 +75,13 @@ router.get("/:user_id", async (req, res) => {
 
     let comments = await Comment.find({ author: req.params.user_id }).length;
 
-    let newestPost = await Post.findOne({ author: req.params.user_id }).findOne(
-      {},
-      { sort: { date: -1 } },
-      (err, data) => {
-         console.log(data);
-      },
-    );
+    let newestPost = await Post.findOne({ author: req.params.user_id }).findOne({}, { sort: { date: -1 } });
+
     let mostLikedPost = await Post.findOne({ author: req.params.user_id }).sort({ liked: -1 });
 
     let mostPopularPost = await Post.findOne({ author: req.params.user_id }).sort({ views: -1 });
 
-    let dates = await Post.find({author: req.params.user_id}).map(post => post.date);
+    let dates = await Post.find({ author: req.params.user_id }).map((post) => post.date);
 
     const data = {
       id: profile._id,
@@ -103,15 +97,14 @@ router.get("/:user_id", async (req, res) => {
       newestPost: newestPost,
       mostLikedPost: mostLikedPost,
       mostPopularPost: mostPopularPost,
-      dates: []
-    }
-    console.log(data)
+      dates: [],
+    };
+
     res.json(data);
   } catch (err) {
     if (err.kind == "ObjectId") {
       return res.status(400).json({ msg: "Profile not found" });
     }
-    console.log(err)
     res.status(500).send("Server Error");
   }
 });
@@ -126,7 +119,6 @@ router.delete("/", auth, async (req, res) => {
 
     res.json({ msg: "User deleted" });
   } catch (err) {
-
     res.status(500).send("Server Error");
   }
 });

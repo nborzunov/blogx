@@ -3,7 +3,7 @@ const mongoose = require("mongoose");
 const PostSchema = new mongoose.Schema({
   author: {
     type: mongoose.ObjectId,
-    ref: "user",
+    ref: "User",
   },
   title: {
     type: String,
@@ -17,12 +17,15 @@ const PostSchema = new mongoose.Schema({
     type: Date,
     default: Date.now,
   },
-  views: {
-    type: Number,
-    default: 0,
-  },
-  liked: [{ type: mongoose.ObjectId, ref: "user" }],
-  comments: [{ type: mongoose.ObjectId, ref: "comment" }],
+  views: Number,
+  liked: [{ type: mongoose.ObjectId, ref: "User" }],
+  comments: [{ type: mongoose.ObjectId, ref: "Comment" }],
 });
 
-module.exports = Post = mongoose.model("post", PostSchema);
+PostSchema.index({ title: "text", subtitle: "text", keywords: "text", body: "text" });
+
+const Post = mongoose.model("Post", PostSchema);
+
+Post.createIndexes();
+
+module.exports = Post;

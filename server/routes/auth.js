@@ -23,13 +23,16 @@ router.get("/", auth, async (req, res) => {
 // login
 router.post(
   "/login",
-  [check("email").isEmail().withMessage({
-    field: 'email',
-    msg: "Please include a valid email"
-  }), check("password").exists().withMessage({
-    field: 'password',
-    msg: "Password is required"
-  })],
+  [
+    check("email").isEmail().withMessage({
+      field: "email",
+      msg: "Please include a valid email",
+    }),
+    check("password").exists().withMessage({
+      field: "password",
+      msg: "Password is required",
+    }),
+  ],
   async (req, res) => {
     const errors = validationResult(req);
     if (!errors.isEmpty()) {
@@ -87,20 +90,20 @@ router.post(
   "/signup",
   [
     check("name").not().isEmpty().isLength({ min: 4, max: 40 }).withMessage({
-      field: 'name',
-      msg: "Name is required"
+      field: "name",
+      msg: "Name is required",
     }),
     check("surname").not().isEmpty().isLength({ min: 4, max: 40 }).withMessage({
-      field: 'surname',
-      msg: "Surname is required"
+      field: "surname",
+      msg: "Surname is required",
     }),
     check("email").isEmail().withMessage({
-      field: 'email',
-      msg: "Please include a valid email"
+      field: "email",
+      msg: "Please include a valid email",
     }),
     check("password").isLength({ min: 6 }).withMessage({
-      field: 'password',
-      msg: "Please enter a password with 6 or more characters"
+      field: "password",
+      msg: "Please enter a password with 6 or more characters",
     }),
   ],
   async (req, res) => {
