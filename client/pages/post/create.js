@@ -14,8 +14,9 @@ import {
 import { createPost } from '../../store/actions/posts';
 import Layout from './../../components/Layout/Layout';
 import TopPost from './../../components/Posts/TopPost';
-import withAuth from '../../hocs/withAuth';
-import Link from 'next/link';
+import PostContent from './../../components/Posts/PostContent';
+import { createRef, useState } from 'react';
+import {setError} from '../../store/actions/errors';
 
 const EditWrapper = styled.div`
     width: 1000px;
@@ -46,17 +47,10 @@ const PreviewWrapper = styled.div`
     width: 1000px;
 `;
 
-function ProfilePage(props) {
+export default function ProfilePage(props) {
     const dispatch = useDispatch();
 
-    function setPreviewImage(file) {
-        const reader = new FileReader();
-
-        reader.onload = function (e) {
-            setValues({ ...values, previewImage: e.target.result });
-        };
-        reader.readAsDataURL(file);
-    }
+    const formRef = createRef();
 
     const {
         handleSubmit,
@@ -88,14 +82,18 @@ function ProfilePage(props) {
             body: Yup.string().required('Body is required'),
         }),
         onSubmit: async (values) => {
-            const result = await dispatch(createPost(values));
+            const result = await dispatch(
+                createPost(new FormData(formRef.current))
+            );
         },
     });
+
+
     return (
         <Layout title="Create Post">
             <EditWrapper>
                 <Heading variant="h1">Create Post</Heading>
-                <Form onSubmit={handleSubmit}>
+                <Form onSubmit={handleSubmit} ref={formRef}>
                     <Input
                         placeholder="Title"
                         name="title"
@@ -115,10 +113,16 @@ function ProfilePage(props) {
                         value={values.keywords}
                         onChange={handleChange}
                     />
+                    
                     <FileUpload
                         name="previewImage"
                         value={values.previewImage.src}
-                        onChange={(e) => setPreviewImage(e.target.files[0])}
+                        onChange={(e) =>
+                            setValues({
+                                ...values,
+                                previewImage: e.target.files[0],
+                            })
+                        }
                     />
 
                     <TextField
@@ -131,6 +135,7 @@ function ProfilePage(props) {
                     <Button variant="submit" type="submit">
                         Upload Post
                     </Button>
+                    <button onClick={e => dispatch(setError('error'))}>error</button>
                 </Form>
             </EditWrapper>
 
@@ -138,11 +143,9 @@ function ProfilePage(props) {
                 <PreviewWrapper>
                     <Heading variant="h1">Preview</Heading>
                     <TopPost post={values} isPreview />
-                    <Markdown>{values.body}</Markdown>
+                    <PostContent post={values} />
                 </PreviewWrapper>
             )}
         </Layout>
     );
 }
-
-export default withAuth(ProfilePage);

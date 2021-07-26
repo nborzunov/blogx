@@ -1,21 +1,21 @@
 import React, { useState } from 'react';
-
 import { withRouter } from 'next/router';
 import { useSelector } from 'react-redux';
-import { Link, Modal, Container } from '../UI';
+import { Link, Modal, Container, Input } from '../UI';
 import LoginForm from '../Auth/LoginForm';
 import SignupForm from '../Auth/SignupForm';
 import styled from 'styled-components';
-
+import SearchInput from './SearchInput';
 const HeaderWrapper = styled.div`
     width: 1000px;
     height: 64px;
-    padding: 16px;
     display: flex;
     justify-content: space-between;
-    align-items: center;
+    align-items: baseline;
     max-width: 1200px;
     margin: auto;
+    margin-bottom: 40px;
+    background: white;
 `;
 
 function Header({ router }) {
@@ -24,32 +24,62 @@ function Header({ router }) {
     );
 
     function onCloseModal() {
-        router.push(router.pathname);
+        router.push(router.asPath.replace(/\?modal[\s\S]*/g, ''));
     }
     function onOpenLoginModal() {
-        router.push(`${router.pathname}?modal=login`);
+        router.push({
+            pathname: router.pathname,
+            query: { ...router.query, modal: 'login' },
+        });
     }
 
+    function onOpenSignupModal() {
+        router.push({
+            pathname: router.pathname,
+            query: { ...router.query, modal: 'signup' },
+        });
+    }
 
+    function onSearchSubmit(e) {
+        e.preventDefault();
+
+        router.push({
+            pathname: '/search/',
+            query: {
+                query: e.target[0].children[0].value,
+                page: 1,
+                type: 'posts',
+            },
+        });
+    }
     return (
         <Container maxWidth="md">
             {router.query.modal && (
                 <Modal onClose={onCloseModal}>
-                {router.query.modal.includes('login') && (
-                    <LoginForm onClose={onCloseModal} />
-                )}
-                {router.query.modal.includes('signup') && (
-                    <SignupForm
-                        onOpenLoginModal={onOpenLoginModal}
-                        onClose={onCloseModal}
-                    />
-                )}
-            </Modal>
+                    {router.query.modal.includes('login') && (
+                        <LoginForm onClose={onCloseModal} />
+                    )}
+                    {router.query.modal.includes('signup') && (
+                        <SignupForm
+                            onOpenLoginModal={onOpenLoginModal}
+                            onClose={onCloseModal}
+                        />
+                    )}
+                </Modal>
             )}
             <HeaderWrapper>
-                <Link size="large" title="back" onClick={() => router.back()} />
+                <div>
+                    <Link
+                        size="large"
+                        title="back"
+                        onClick={() => router.back()}
+                    />
+                    <Link href="/posts" size="large" title="posts" />
+                </div>
 
-                <Link href="/posts" size="large" title="posts" />
+                <div>
+                    <SearchInput onSubmit={onSearchSubmit} />
+                </div>
 
                 <div>
                     {!isAuth && (
@@ -57,13 +87,13 @@ function Header({ router }) {
                             <Link
                                 size="large"
                                 title="login"
-                                href={`${router.pathname}?modal=login`}
+                                onClick={onOpenLoginModal}
                             />
 
                             <Link
                                 size="large"
                                 title="signup"
-                                href={`${router.pathname}?modal=signup`}
+                                onClick={onOpenSignupModal}
                             />
                         </>
                     )}

@@ -1,60 +1,36 @@
-import {Container, Divider, CssBaseline} from '@material-ui/core';
-
 import axios from 'axios';
 import { useRouter } from 'next/router';
-import { useEffect, useState } from 'react';
-import Footer from '../../components/UI/Footer';
-import Header from '../../components/UI/Header';
-import MainFeaturedPost from '../../components/Posts/MainFeaturedPost';
-import MarkdownUI from '../../components/Posts/Markdown';
-import Comments from '../../components/Comments/Comments';
-import Head from 'next/head';
+import Layout from '../../components/Layout/Layout';
+import TopPost from '../../components/Posts/TopPost';
+import PostContent from './../../components/Posts/PostContent';
+import { useSelector } from 'react-redux';
+import Comments from './../../components/Comments/Comments';
 
-
-const fetcher = async (url) => {
-    const res = await fetch(url);
-    const data = await res.json();
-
-    if (res.status !== 200) {
-        throw new Error(data.message);
-    }
-    return data;
-};
-
-function Post() {
+function PostPage({ post }) {
     const router = useRouter();
     const query = router.query;
 
-    const [post, setPost] = useState();
-
-    async function getPost(id) {
-        if (id) {
-            const res = await axios.get(`/api/post/${id}`);
-
-            setPost(res.data);
-        }
-    }
-
-    useEffect(() => {
-        getPost(query.id);
-    }, [query.id]);
+    const auth = useSelector((state) => state.auth);
 
     return (
-        <>
-        <Head>
-            <title>{post?.title}</title>
-        </Head>
-            <CssBaseline />
-            <Container maxWidth="lg">
-                <Header />
-                {post && <MainFeaturedPost post={post} isOnePost={true} />}
-                {post?.content && <MarkdownUI content={post.content} />}
-                <Divider />
-                {post?.comments && <Comments comments={post.comments}/>}
-                <Footer />
-            </Container>
-        </>
+        <Layout title={post.title}>
+            <TopPost post={post} auth={auth} isPreview />
+            <PostContent post={post} auth={auth} />
+            <Comments post={post} />
+        </Layout>
     );
 }
 
-export default Post;
+export async function getServerSideProps({ params, query }) {
+    try {
+        const res = await axios.get(`http://localhost:4000/post/${params.id}`);
+
+        return {
+            props: {
+                post: res.data,
+            },
+        };
+    } catch (err) {}
+}
+
+export default PostPage;
