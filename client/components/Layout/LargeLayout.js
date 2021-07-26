@@ -15,7 +15,14 @@ const SectionWrapper = styled.div`
     max-width: 1000px;
     margin-bottom: 32px;
 `;
-export default function Layout({ title, description, children }) {
+const Grid = styled.div`
+    display: grid;
+    max-width: 1600px;
+    min-height: calc(100vh - 200px);
+    grid-template-columns: 300px 1000px 300px;
+    gap: 16px;
+`;
+export default function LargeLayout({ title, description, children }) {
     return (
         <>
             <Head>
@@ -27,19 +34,9 @@ export default function Layout({ title, description, children }) {
                 alignItems="center"
             >
                 <Header />
-                <Container maxWidth="md">
-                    {!Array.isArray(children) ? (
-                        <SectionWrapper>{children}</SectionWrapper>
-                    ) : (
-                        <>
-                            {children.map((child, id) => (
-                                <SectionWrapper key={id}>
-                                    {child}
-                                </SectionWrapper>
-                            ))}
-                        </>
-                    )}
-                </Container>
+
+                <Grid>{children.map((child) => child)}</Grid>
+
                 <Footer />
             </Container>
         </>
