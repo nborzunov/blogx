@@ -16,7 +16,7 @@ import Layout from './../../components/Layout/Layout';
 import TopPost from './../../components/Posts/TopPost';
 import PostContent from './../../components/Posts/PostContent';
 import { createRef, useState } from 'react';
-import {setError} from '../../store/actions/errors';
+import { setError } from '../../store/actions/errors';
 
 const EditWrapper = styled.div`
     width: 1000px;
@@ -88,7 +88,6 @@ export default function ProfilePage(props) {
         },
     });
 
-
     return (
         <Layout title="Create Post">
             <EditWrapper>
@@ -113,7 +112,7 @@ export default function ProfilePage(props) {
                         value={values.keywords}
                         onChange={handleChange}
                     />
-                    
+
                     <FileUpload
                         name="previewImage"
                         value={values.previewImage.src}
@@ -135,7 +134,6 @@ export default function ProfilePage(props) {
                     <Button variant="submit" type="submit">
                         Upload Post
                     </Button>
-                    <button onClick={e => dispatch(setError('error'))}>error</button>
                 </Form>
             </EditWrapper>
 
