@@ -26,7 +26,10 @@ async function uploadFile(file, createPost) {
   const fileName = uuid.v4();
 
   const letters = file.originalname.split(".");
-  const blob = bucket.file(`${fileName}.${letters[letters.length - 1]}`);
+
+  const fileFullName = `${fileName}.${letters[letters.length - 1]}`;
+  
+  const blob = bucket.file(fileFullName);
 
   const blobStream = blob.createWriteStream();
 
@@ -35,7 +38,7 @@ async function uploadFile(file, createPost) {
   });
 
   blobStream.on("finish", () => {
-    const imageUrl = format(`https://storage.googleapis.com/${bucket.name}/${fileName}`);
+    const imageUrl = format(`https://storage.googleapis.com/${bucket.name}/${fileFullName}`);
     createPost(imageUrl)
   });
 

@@ -49,24 +49,26 @@ router.get("/:id", async (req, res) => {
 
 router.post(
   "/",
-  upload.fields([
-    {
-      name: "title",
-    },
-    {
-      name: "subtitle",
-    },
-    {
-      name: "keywords",
-    },
-    {
-      name: "previewImage",
-    },
-    {
-      name: "body",
-    },
-  ]),
-  auth,
+  [
+    upload.fields([
+      {
+        name: "title",
+      },
+      {
+        name: "subtitle",
+      },
+      {
+        name: "keywords",
+      },
+      {
+        name: "previewImage",
+      },
+      {
+        name: "body",
+      },
+    ]),
+    auth,
+  ],
   async (req, res) => {
     const body = req.body;
     const file = req.files.previewImage[0];
@@ -81,7 +83,7 @@ router.post(
           ...req.body,
           previewImage: imageUrl,
         });
-  
+
         newPost.save();
         res.status(200).send(newPost);
       }
