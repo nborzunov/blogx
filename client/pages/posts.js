@@ -7,8 +7,8 @@ import Head from 'next/head';
 import React, { useEffect, useState } from 'react';
 import FeaturedPost from '../components/Posts/FeaturedPost';
 import MainFeaturedPost from '../components/Posts/MainFeaturedPost';
-import Footer from '../components/UI/Footer';
-import Header from '../components/UI/Header';
+import Header from '../components/Layout/Header';
+import Footer from '../components/Layout/Footer';
 
 const useStyles = makeStyles((theme) => ({
     mainGrid: {
