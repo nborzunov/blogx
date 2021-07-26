@@ -14,3 +14,11 @@ export const setError = (error) => async (dispatch) => {
         3000
     );
 };
+
+
+export const removeError = () => async (dispatch) => {
+    dispatch({
+        type: types.SET_ERROR,
+        payload: null
+    });
+}
