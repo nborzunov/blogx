@@ -90,7 +90,13 @@ export default function SignupForm({ onClose, onOpenLoginModal }) {
     });
 
     function handleLoginClick() {
-        router.push(`${router.pathname}?modal=login`);
+        router.replace({
+            pathname: router.pathname,
+            query: {
+                ...router.query,
+                modal: 'login',
+            },
+        });
     }
 
     return (
