@@ -1,11 +1,8 @@
-import styled from 'styled-components';
-import { Heading, Button, Link } from '../UI';
-import Slider from 'react-slick';
-import Carousel from 'react-bootstrap/Carousel';
 import { useState } from 'react';
-import Image from 'next/image';
-import moment from 'moment';
+import styled from 'styled-components';
+import PostCard from '../Posts/PostCard';
 import TopPost from '../Posts/TopPost';
+import { Button, Heading, Link } from '../UI';
 
 const ProfileContentWrapper = styled.div`
     width: 100%;
@@ -28,14 +25,6 @@ const TabContent = styled.div`
     margin: 0 24px;
 `;
 
-
-const StyledImage = styled(Image)`
-    background: red;
-    object-fit: cover;
-    -webkit-filter: brightness(90%);
-    z-index: 1000;
-`;
-
 const PostsCardsWrapper = styled.div`
     margin-top: 32px;
 `;
@@ -46,43 +35,6 @@ const PostsGrid = styled.div`
     gap: 24px;
 `;
 
-const PostCard = styled.div`
-    height: 180px;
-    box-shadow: 0px 3px 9px rgba(43, 98, 169, 0.5);
-    display: flex;
-`;
-const PostInfo = styled.div`
-    width: 316px;
-    height: 180px;
-    padding: 16px;
-    & h5 {
-        margin: 4px 8px;
-        overflow: hidden;
-        text-overflow: ellipsis;
-        width: 90%;
-    }
-    & h6 {
-        color: #666;
-        margin: 4px 8px;
-        overflow: hidden;
-        text-overflow: ellipsis;
-        display: -webkit-box;
-        -webkit-box-orient: vertical;
-        -webkit-line-clamp: 3; /* number of lines to show */
-        line-height: 20px; /* fallback */
-        max-height: 60px;
-        width: 80%;
-    }
-    & a {
-        margin: 4px 8px;
-        padding: 0;
-    }
-`;
-const PostInfoDate = styled.div`
-    & h6 {
-        color: #888;
-    }
-`;
 
 export default function ProfileContent({ profile }) {
     const [currentTab, setCurrentTab] = useState(0);
@@ -133,27 +85,7 @@ export default function ProfileContent({ profile }) {
                 </Heading>
                 <PostsGrid>
                     {profile.posts.map((post) => (
-                        <PostCard>
-                            <PostInfo>
-                                <Heading variant="h5">{post.title}</Heading>
-                                
-
-                                <Heading variant="h6">{post.subtitle}</Heading>
-
-                                <PostInfoDate>
-                                    <Heading variant="h6">
-                                        {moment().startOf(post.date).fromNow()}
-                                    </Heading>
-                                </PostInfoDate>
-
-                                <Link src="/" title="Read more.." size="small" />
-                            </PostInfo>
-                            <StyledImage
-                                src={post.previewImage}
-                                width={150}
-                                height={140}
-                            />
-                        </PostCard>
+                        <PostCard post={post}/>
                     ))}
                 </PostsGrid>
             </PostsCardsWrapper>

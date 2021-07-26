@@ -1,43 +1,51 @@
-import { Paper } from '@material-ui/core';
-import React from 'react';
+import React, { useState } from 'react';
+import { useSelector } from 'react-redux';
+import styled from 'styled-components';
+import Heading from './../UI/Heading';
 import Comment from './Comment';
-import { makeStyles } from '@material-ui/core/styles';
-import { Grid, TextField, Typography } from '@material-ui/core';
+import axios from 'axios';
 
-const useStyles = makeStyles((theme) => ({
-    wrapper: {
-        padding: '14px',
-    },
-    section: {
-        padding: '40px 20px',
-        margin: '20px 0',
-    },
-    formSection: {
-        margin: '20px 0',
-    },
-}));
+const CommentsContainer = styled.div`
+    margin: 24px;
+    & h1 {
+        margin: 0;
+    }
+`;
+function Comments({ post }) {
+    const { auth } = useSelector((state) => state);
+    const [newComment, setNewComment] = useState('');
 
-function Comments({ comments }) {
-    const styles = useStyles();
+    const [comments, setComments] = useState(post.comments);
 
+    async function handleSubmit(e) {
+        e.preventDefault();
+        const body = {
+            message: newComment,
+        };
+
+        const res = await axios.post(
+            `http://localhost:4000/post/${post._id}/comment`,
+            body
+        );
+        setComments(res.data);
+    }
     return (
-        <div className={styles.wrapper}>
-            <h1>Comments</h1>
-                <TextField
-					fullWidth
-                    label="Leave a comment.."
-					variant='outlined'
-                    multiline
-                    rowsMax={12}
-
+        <CommentsContainer>
+            <Heading variant="h1">Comments</Heading>
+            <form onSubmit={handleSubmit}>
+                <input
+                    type="text"
+                    name="comment"
+                    value={newComment}
+                    onChange={(e) => setNewComment(e.target.value)}
                 />
+                <button type="submit">submit</button>
+            </form>
 
-            <Paper className={styles.section}>
-                {comments.map((comment) => (
-                    <Comment comment={comment} />
-                ))}
-            </Paper>
-        </div>
+            {comments.map((comment) => (
+                <Comment comment={comment} />
+            ))}
+        </CommentsContainer>
     );
 }
 

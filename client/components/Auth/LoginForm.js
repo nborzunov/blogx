@@ -19,7 +19,7 @@ export default function LoginForm({ onClose }) {
 
     useEffect(() => {
         if (isAuth) {
-            router.push(router.pathname)
+            router.push(router.pathname);
         }
     }, [isAuth]);
 
@@ -51,7 +51,7 @@ export default function LoginForm({ onClose }) {
             const result = await dispatch(login(values));
 
             if (result === 'ok') {
-                onClose()
+                onClose();
             } else {
                 if (result.errors[0].field === 'email') {
                     setErrors({
@@ -80,7 +80,7 @@ export default function LoginForm({ onClose }) {
                     type="text"
                     placeholder="Email"
                     name="email"
-                    withIcon='true'
+                    withIcon="true"
                     value={values.email}
                     onChange={handleChange}
                     onBlur={handleBlur}
@@ -97,7 +97,7 @@ export default function LoginForm({ onClose }) {
                     type="password"
                     placeholder="Password"
                     name="password"
-                    withIcon='true'
+                    withIcon="true"
                     value={values.password}
                     onChange={handleChange}
                     onBlur={handleBlur}
