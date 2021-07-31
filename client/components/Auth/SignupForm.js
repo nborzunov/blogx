@@ -19,9 +19,11 @@ export default function SignupForm({ onClose, onOpenLoginModal }) {
     const [loading, setLoading] = useState(false);
 
     useEffect(() => {
-        if (isAuth) {
-            router.push(router.pathname);
-        }
+        const {modal, ...query} = router.query;
+        router.push({
+            pathname: router.pathname,
+            query: query
+        });
     }, [isAuth]);
 
     const {
