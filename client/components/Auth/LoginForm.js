@@ -19,7 +19,11 @@ export default function LoginForm({ onClose }) {
 
     useEffect(() => {
         if (isAuth) {
-            router.push(router.pathname);
+            const {modal, ...query} = router.query;
+            router.push({
+                pathname: router.pathname,
+                query: query
+            });
         }
     }, [isAuth]);
 

@@ -8,13 +8,12 @@ import styled from 'styled-components';
 import SearchInput from './SearchInput';
 const HeaderWrapper = styled.div`
     width: 1000px;
-    height: 64px;
+    height: 100px;
     display: flex;
     justify-content: space-between;
     align-items: baseline;
     max-width: 1200px;
     margin: auto;
-    margin-bottom: 40px;
     background: white;
 `;
 
@@ -24,7 +23,11 @@ function Header({ router }) {
     );
 
     function onCloseModal() {
-        router.push(router.asPath.replace(/\?modal[\s\S]*/g, ''));
+        const {modal, ...query} = router.query;
+        router.push({
+            pathname: router.pathname,
+            query: query
+        });
     }
     function onOpenLoginModal() {
         router.push({
