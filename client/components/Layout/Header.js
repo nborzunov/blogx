@@ -15,6 +15,12 @@ const HeaderWrapper = styled.div`
     max-width: 1200px;
     margin: auto;
     background: white;
+    position: fixed;
+    top: 0;
+    left: 50%;
+    transform: translateX(-50%);
+    z-index: 950;
+    border-bottom: 1px solid rgba(0, 0, 0, 0.25);
 `;
 
 function Header({ router }) {

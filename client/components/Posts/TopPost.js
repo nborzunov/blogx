@@ -11,18 +11,18 @@ const MainPostWrapper = styled.div`
 const StyledImage = styled(Image)`
     object-fit: cover;
     -webkit-filter: brightness(85%);
-    z-index: 1000;
+    z-index: 900;
 `;
 const CasualImage = styled.img`
     width: 952px;
     height: 350px;
     object-fit: cover;
     -webkit-filter: brightness(85%);
-    z-index: 1000;
+    z-index: 900;
 `;
 const MainPostInfoContent = styled.div`
     position: absolute;
-    z-index: 1020;
+    z-index: 900;
     width: 100%;
     & h1 {
         color: rgba(255, 255, 255, 0.95);
