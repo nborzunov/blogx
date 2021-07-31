@@ -1,7 +1,6 @@
 import styled from 'styled-components';
 
 const AvatarWrapper = styled.div`
-
     border-radius: 50%;
     overflow: hidden;
     position: relative;
@@ -18,6 +17,16 @@ const AvatarWrapper = styled.div`
             width: 120px;
             height: 120px;
         }
+    `}
+    ${(props) =>
+        props.size === 'medium' &&
+        `
+        margin: 16px;
+        width: 80px;
+        height: 80px;
+        box-shadow: 0px 5px 20px 0px rgb(108, 68, 252),
+        0px 0px 0px 4px rgba(107, 74, 255, 0.5);
+    
     `}
     ${(props) =>
         props.size === 'small' &&
