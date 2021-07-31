@@ -5,6 +5,7 @@
   "main": "index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "concurrently \"npm run client\" \"npm run server\"",
     "client": "npm --prefix ./client run dev",
     "server": "npm --prefix ./server run dev"
   },
@@ -19,6 +20,7 @@
   },
   "homepage": "https://github.com/tydusgg/blogx#readme",
   "dependencies": {
+    "concurrently": "^6.2.0",
     "multer": "^1.4.2"
   }
 }

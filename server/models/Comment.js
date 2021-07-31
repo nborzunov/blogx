@@ -6,21 +6,29 @@ const CommentSchema = new mongoose.Schema({
     ref: "User",
   },
   post: {
-      type: mongoose.ObjectId,
-      ref: "Post"
+    type: mongoose.ObjectId,
+    ref: "Post",
   },
   text: {
     type: String,
-    required: true
+    required: true,
   },
   date: {
     type: Date,
     default: Date.now,
-  }
+  },
+  parentComment: {
+    type: mongoose.ObjectId,
+    ref: "Comment",
+  },
+  repliedTo: {
+    type: mongoose.ObjectId,
+    ref: "Comment",
+  },
+  replies: [{ type: mongoose.ObjectId, ref: "Comment" }],
 });
 
-
-CommentSchema.index({ text: "text"});
+CommentSchema.index({ text: "text" });
 
 const Comment = mongoose.model("Comment", CommentSchema);
 
