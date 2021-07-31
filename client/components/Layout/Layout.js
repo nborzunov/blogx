@@ -15,6 +15,9 @@ const SectionWrapper = styled.div`
     max-width: 1000px;
     margin-bottom: 32px;
 `;
+const ContentWrapper = styled.div`
+    margin-top: 100px;
+`
 export default function Layout({ title, description, children }) {
     return (
         <>
@@ -27,6 +30,7 @@ export default function Layout({ title, description, children }) {
                 alignItems="center"
             >
                 <Header />
+                <ContentWrapper>
                 <Container maxWidth="md">
                     {!Array.isArray(children) ? (
                         <SectionWrapper>{children}</SectionWrapper>
@@ -40,6 +44,8 @@ export default function Layout({ title, description, children }) {
                         </>
                     )}
                 </Container>
+                </ContentWrapper>
+                
                 <Footer />
             </Container>
         </>
