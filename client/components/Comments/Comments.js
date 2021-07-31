@@ -1,49 +1,64 @@
 import React, { useState } from 'react';
-import { useSelector } from 'react-redux';
+import { useDispatch } from 'react-redux';
 import styled from 'styled-components';
 import Heading from './../UI/Heading';
-import Comment from './Comment';
-import axios from 'axios';
+import Comment from './TopComment';
+import TextArea from './CommentTextArea';
+import {createComment} from '../../store/actions/posts';
 
 const CommentsContainer = styled.div`
-    margin: 24px;
+    padding: 24px;
     & h1 {
         margin: 0;
     }
+    position: relative;
+    background-color: #f0f2fa;
+    border-radius: 12px;
 `;
+
 function Comments({ post }) {
-    const { auth } = useSelector((state) => state);
     const [newComment, setNewComment] = useState('');
 
     const [comments, setComments] = useState(post.comments);
 
+    const dispatch = useDispatch();
+
     async function handleSubmit(e) {
         e.preventDefault();
-        const body = {
-            message: newComment,
-        };
+        const comments = await dispatch(createComment(post._id, newComment));
 
-        const res = await axios.post(
-            `http://localhost:4000/post/${post._id}/comment`,
-            body
-        );
-        setComments(res.data);
+        e.target.blur();
+        setNewComment('');
+        setComments(comments);
     }
+
+    function handleKeyPress(e) {
+        if (e.charCode === 13) {
+            e.stopPropagation();
+            handleSubmit(e);
+        }
+    }
+
     return (
         <CommentsContainer>
             <Heading variant="h1">Comments</Heading>
-            <form onSubmit={handleSubmit}>
-                <input
-                    type="text"
-                    name="comment"
-                    value={newComment}
-                    onChange={(e) => setNewComment(e.target.value)}
-                />
-                <button type="submit">submit</button>
-            </form>
+
+            <TextArea
+                type="text"
+                name="comment"
+                value={newComment}
+                placeholder="Add comment.."
+                onChange={(e) => setNewComment(e.target.value)}
+                onKeyPress={handleKeyPress}
+            />
 
             {comments.map((comment) => (
-                <Comment comment={comment} />
+                <Comment
+                    comment={comment}
+                    ownerId={post.author._id}
+                    key={comment._id}
+                    setComments={setComments}
+                />
             ))}
         </CommentsContainer>
     );
