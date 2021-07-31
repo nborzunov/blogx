@@ -5,7 +5,7 @@ import { createWrapper } from 'next-redux-wrapper';
 import Head from 'next/head';
 import React, { useEffect } from 'react';
 import { Provider } from 'react-redux';
-import theme from '../src/theme';
+import theme from '../utils/theme';
 import store from './../store/store';
 import setAuthToken from '../utils/setAuthToken';
 import '../styles/globals.css';
