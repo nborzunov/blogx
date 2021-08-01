@@ -10,7 +10,7 @@ export const getUser = () => async (dispatch) => {
             setAuthToken(token);
         }
 
-        const res = await axios.get('/auth');
+        const res = await axios.get('http://localhost:4000/auth');
 
         if (res.status === 200) {
             dispatch({
