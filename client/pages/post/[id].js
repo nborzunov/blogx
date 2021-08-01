@@ -5,18 +5,21 @@ import TopPost from '../../components/Posts/TopPost';
 import PostContent from './../../components/Posts/PostContent';
 import { useSelector } from 'react-redux';
 import Comments from './../../components/Comments/Comments';
+import {useState} from 'react';
 
 function PostPage({ post }) {
     const router = useRouter();
     const query = router.query;
 
+    const [currentPost, setPost] = useState(post);
+
     const auth = useSelector((state) => state.auth);
 
     return (
         <Layout title={post.title}>
-            <TopPost post={post} auth={auth} isPreview />
-            <PostContent post={post} auth={auth} />
-            <Comments post={post} />
+            <TopPost post={currentPost} setPost={setPost} isPreview />
+            <PostContent post={currentPost} auth={auth} />
+            <Comments post={currentPost} />
         </Layout>
     );
 }
