@@ -19,6 +19,7 @@ const PostSchema = new mongoose.Schema({
   },
   views: Number,
   liked: [{ type: mongoose.ObjectId, ref: "User" }],
+  disliked: [{ type: mongoose.ObjectId, ref: "User"}],
   comments: [{ type: mongoose.ObjectId, ref: "Comment" }],
 });
 
