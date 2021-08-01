@@ -11,7 +11,7 @@ const ProfileSchema = new mongoose.Schema({
   age: Number,
   country: String,
   city: String,
-  avatar: String,
+  aboutme: String,
   posts: [{ type: mongoose.ObjectId, ref: "Post" }],
   following: [{ type: mongoose.ObjectId, ref: "User" }],
   friends: [{ type: mongoose.ObjectId, ref: "User" }],

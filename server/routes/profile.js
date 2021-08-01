@@ -1,8 +1,6 @@
 const express = require("express");
-const request = require("request");
-const config = require("config");
 const auth = require("../middleware/auth");
-const { check, validationResult } = require("express-validator");
+const mongoose = require("mongoose");
 
 const Profile = require("../models/Profile");
 const User = require("../models/User");
@@ -10,6 +8,10 @@ const Post = require("../models/Post");
 const Comment = require("../models/Comment");
 
 const router = express.Router();
+
+let multer = require("multer");
+let upload = multer();
+const uploadFile = require("../utils/uploadFile");
 
 // Get all profiles
 router.get("/all", async (req, res) => {
@@ -24,7 +26,7 @@ router.get("/all", async (req, res) => {
 // Get current profile
 router.get("/", auth, async (req, res) => {
   try {
-    const profile = await Profile.findOne({ user: req.user.id }).populate("user", ["name", "avatar"]);
+    const profile = await Profile.findOne({ user: req.user.id }).populate("user", ["name", "surname", "avatar"]);
 
     if (!profile) {
       return res.status(400).json({ msg: "There is no profile for this user" });
@@ -38,27 +40,68 @@ router.get("/", auth, async (req, res) => {
 });
 
 // Update main user data
-router.post("/", [auth], async (req, res) => {
-  console.log(req.body);
-  const { age, country, city, avatar } = req.body;
+router.put(
+  "/",
+  [
+    auth,
+    upload.fields([
+      {
+        name: "age",
+      },
+      {
+        name: "country",
+      },
+      {
+        name: "city",
+      },
+      {
+        name: "avatar",
+      },
+      {
+        name: "aboutme",
+      },
+    ]),
+  ],
+  async (req, res) => {
+    const { age, country, city, aboutme } = req.body;
+    const avatarFile = req.files.avatar[0];
+    const profileFields = {};
+    profileFields.user = req.user.id;
 
-  const profileFields = {};
-  profileFields.user = req.user.id;
+    if (age) profileFields.age = age;
+    if (country) profileFields.country = country;
+    if (city) profileFields.city = city;
+    if (aboutme) profileFields.aboutme = aboutme;
 
-  if (age) profileFields.age = age;
-  if (country) profileFields.country = country;
-  if (city) profileFields.city = city;
-  if (avatar) profileFields.avatar = avatar;
+    try {
+      let user = await User.findById({ _id: new mongoose.Types.ObjectId(req.user.id) });
 
-  try {
-    let profile = await Profile.findOneAndUpdate({ user: req.user.id }, { $set: profileFields }, { new: true, upsert: true });
+      async function saveAvatar(imageUrl) {
+        user.avatar = imageUrl;
 
-    res.json(profile);
-  } catch (err) {
-    console.error(err.message);
-    res.status(500).send("Server error");
+        let profile = await Profile.findOneAndUpdate(
+          { user: req.user.id },
+          {
+            $set: {
+              ...profileFields,
+              avatar: imageUrl,
+            },
+          },
+          { new: true, upsert: true }
+        );
+        
+        user.save();
+        profile.save();
+
+        res.status(200).send(profile);
+      }
+      uploadFile(avatarFile, saveAvatar);
+    } catch (err) {
+      console.error(err.message);
+      res.status(500).send("Server error");
+    }
   }
-});
+);
 
 // get one profile
 router.get("/:user_id", async (req, res) => {
