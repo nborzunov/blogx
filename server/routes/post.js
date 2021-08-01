@@ -53,6 +53,7 @@ router.get("/:id", async (req, res) => {
 
     post.views = views;
 
+
     if (!post) {
       res.status(404).json({
         errors: [
@@ -63,6 +64,8 @@ router.get("/:id", async (req, res) => {
       });
     }
 
+    post.save();
+    
     res.status(200).json(post);
   } catch (err) {
     console.log(err.message);
@@ -201,11 +204,11 @@ router.post("/:postId/comment/:commentId", auth, async (req, res) => {
       post: post,
       parentComment: !comment.parentComment ? comment : comment.parentComment,
       repliedTo: comment.parentComment ? comment : null,
-      text: req.body.message
-    })
+      text: req.body.message,
+    });
     await newComment.save();
 
-    if(!comment.parentComment){
+    if (!comment.parentComment) {
       comment.replies = await [...comment.replies, newComment];
     } else {
       const parentComment = await Comment.findById({ _id: new mongoose.Types.ObjectId(comment.parentComment) });
@@ -215,7 +218,6 @@ router.post("/:postId/comment/:commentId", auth, async (req, res) => {
       await parentComment.save();
     }
     await comment.save();
-
 
     const comments = await Comment.find({ post: post, parentComment: undefined })
       .populate("author", ["name", "surname"])
@@ -254,42 +256,41 @@ router.delete("/:id/comment/:commentId", auth, async (req, res) => {
     const post = await Post.findById({ _id: new mongoose.Types.ObjectId(req.params.id) });
     const comment = await Comment.findById({ _id: new mongoose.Types.ObjectId(req.params.commentId) });
 
-    if ((post.author == req.user.id) || (req.user.id == comment.author)) {
-
-      if(comment.replies.length > 0 && !comment.parentComment) {
+    if (post.author == req.user.id || req.user.id == comment.author) {
+      if (comment.replies.length > 0 && !comment.parentComment) {
         comment.replies.map(async (reply) => {
-          await Comment.deleteOne({ _id: new mongoose.Types.ObjectId(reply) })
+          await Comment.deleteOne({ _id: new mongoose.Types.ObjectId(reply) });
         });
       }
 
       await Comment.findOneAndRemove({ _id: new mongoose.Types.ObjectId(req.params.commentId) });
 
       const comments = await Comment.find({ post: post, parentComment: undefined })
-      .populate("author", ["name", "surname"])
-      .populate({
-        path: "replies",
-        select: "-post -parentComment",
-        populate: [
-          {
-            path: "author",
-            model: "User",
-            select: "name surname",
-          },
-          {
-            path: "repliedTo",
-            model: "Comment",
-            select: "author",
-            populate: {
+        .populate("author", ["name", "surname"])
+        .populate({
+          path: "replies",
+          select: "-post -parentComment",
+          populate: [
+            {
               path: "author",
               model: "User",
               select: "name surname",
             },
-          },
-        ],
-      })
-      .sort({ date: -1 });
+            {
+              path: "repliedTo",
+              model: "Comment",
+              select: "author",
+              populate: {
+                path: "author",
+                model: "User",
+                select: "name surname",
+              },
+            },
+          ],
+        })
+        .sort({ date: -1 });
 
-    res.status(200).send(comments);
+      res.status(200).send(comments);
     } else {
       res.status(400).send("You are not permitted");
     }
@@ -299,4 +300,45 @@ router.delete("/:id/comment/:commentId", auth, async (req, res) => {
   }
 });
 
+router.put("/:id/like", auth, async (req, res) => {
+  try {
+    const post = await Post.findById({ _id: new mongoose.Types.ObjectId(req.params.id) });
+
+    if(post.liked.includes(req.user.id)){
+      post.liked = post.liked.filter(id => id != req.user.id);
+    } else {
+
+      if(post.disliked.includes(req.user.id)){
+        post.disliked = post.disliked.filter(id => id != req.user.id);
+      }
+      post.liked.push(req.user.id);
+    }
+    post.save();
+    res.status(200).send(post);
+  } catch (err) {
+    console.log(err.message);
+    res.status(500).send("Server error");
+  }
+});
+
+router.put("/:id/dislike", auth, async (req, res) => {
+  try {
+    const post = await Post.findById({ _id: new mongoose.Types.ObjectId(req.params.id) });
+
+    if(post.disliked.includes(req.user.id)){
+      post.disliked = post.disliked.filter(id => id != req.user.id);
+    } else {
+      if(post.liked.includes(req.user.id)){
+        post.liked = post.liked.filter(id => id != req.user.id);
+      }
+
+      post.disliked.push(req.user.id);
+    }
+    post.save();
+    res.status(200).send(post);
+  } catch (err) {
+    console.log(err.message);
+    res.status(500).send("Server error");
+  }
+});
 module.exports = router;
