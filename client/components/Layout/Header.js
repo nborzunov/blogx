@@ -1,11 +1,13 @@
-import React, { useState } from 'react';
+import React, { useEffect } from 'react';
 import { withRouter } from 'next/router';
-import { useSelector } from 'react-redux';
+import { useSelector, useDispatch } from 'react-redux';
 import { Link, Modal, Container, Input } from '../UI';
 import LoginForm from '../Auth/LoginForm';
 import SignupForm from '../Auth/SignupForm';
 import styled from 'styled-components';
 import SearchInput from './SearchInput';
+import { getUser } from '../../store/actions/auth';
+
 const HeaderWrapper = styled.div`
     width: 1000px;
     height: 100px;
@@ -28,11 +30,13 @@ function Header({ router }) {
         (state) => state.auth
     );
 
+    const dispatch = useDispatch();
+
     function onCloseModal() {
-        const {modal, ...query} = router.query;
+        const { modal, ...query } = router.query;
         router.push({
             pathname: router.pathname,
-            query: query
+            query: query,
         });
     }
     function onOpenLoginModal() {
@@ -61,6 +65,16 @@ function Header({ router }) {
             },
         });
     }
+    let token = null;
+    if(typeof window !== "undefined"){
+        token = localStorage.token;
+    }
+    useEffect(() => {
+        if (token) {
+            dispatch(getUser());
+        }
+    }, [token]);
+
     return (
         <Container maxWidth="md">
             {router.query.modal && (

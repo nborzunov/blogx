@@ -30,6 +30,7 @@ export const authReducer = (state = initialState, action) => {
                 surname: payload.surname,
                 email: payload.email,
                 avatar: payload?.avatar,
+                isAuth: true
             };
         case types.LOGOUT:
             (getLocalStorage())?.removeItem('token');
