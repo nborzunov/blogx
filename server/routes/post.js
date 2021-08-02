@@ -18,10 +18,13 @@ let upload = multer();
 const uploadFile = require("../utils/uploadFile");
 
 router.get("/:id", async (req, res) => {
+
   try {
     const post = await Post.findOne({
       _id: req.params.id,
-    }).populate("author", ["name", "surname"]);
+    }).populate('author', ['name', 'surname', 'avatar']);
+
+    
     const comments = await Comment.find({ post: post, parentComment: undefined })
       .populate("author", ["name", "surname"])
       .populate({
@@ -53,7 +56,6 @@ router.get("/:id", async (req, res) => {
 
     post.views = views;
 
-
     if (!post) {
       res.status(404).json({
         errors: [
@@ -65,7 +67,7 @@ router.get("/:id", async (req, res) => {
     }
 
     post.save();
-    
+
     res.status(200).json(post);
   } catch (err) {
     console.log(err.message);
@@ -304,12 +306,11 @@ router.put("/:id/like", auth, async (req, res) => {
   try {
     const post = await Post.findById({ _id: new mongoose.Types.ObjectId(req.params.id) });
 
-    if(post.liked.includes(req.user.id)){
-      post.liked = post.liked.filter(id => id != req.user.id);
+    if (post.liked.includes(req.user.id)) {
+      post.liked = post.liked.filter((id) => id != req.user.id);
     } else {
-
-      if(post.disliked.includes(req.user.id)){
-        post.disliked = post.disliked.filter(id => id != req.user.id);
+      if (post.disliked.includes(req.user.id)) {
+        post.disliked = post.disliked.filter((id) => id != req.user.id);
       }
       post.liked.push(req.user.id);
     }
@@ -325,11 +326,11 @@ router.put("/:id/dislike", auth, async (req, res) => {
   try {
     const post = await Post.findById({ _id: new mongoose.Types.ObjectId(req.params.id) });
 
-    if(post.disliked.includes(req.user.id)){
-      post.disliked = post.disliked.filter(id => id != req.user.id);
+    if (post.disliked.includes(req.user.id)) {
+      post.disliked = post.disliked.filter((id) => id != req.user.id);
     } else {
-      if(post.liked.includes(req.user.id)){
-        post.liked = post.liked.filter(id => id != req.user.id);
+      if (post.liked.includes(req.user.id)) {
+        post.liked = post.liked.filter((id) => id != req.user.id);
       }
 
       post.disliked.push(req.user.id);
