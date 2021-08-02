@@ -36,7 +36,15 @@ const AvatarWrapper = styled.div`
         height: 40px;
         box-shadow: 0px 5px 20px 0px rgb(108, 68, 252),
         0px 0px 0px 4px rgba(107, 74, 255, 0.5);
-    
+    `}
+    ${(props) =>
+        props.size === 'extrasmall' &&
+        `
+        margin: 8px;
+        width: 24px;
+        height: 24px;
+        box-shadow: 0px 1px 2px 0px rgb(108, 68, 252),
+        0px 0px 0px 2px rgba(107, 74, 255, 0.5);
     `}
 `;
 const Avatar = styled.img`
