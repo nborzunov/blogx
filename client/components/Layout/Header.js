@@ -7,6 +7,7 @@ import SignupForm from '../Auth/SignupForm';
 import styled from 'styled-components';
 import SearchInput from './SearchInput';
 import { getUser } from '../../store/actions/auth';
+import tokenService from '../../utils/tokenService';
 
 const HeaderWrapper = styled.div`
     width: 1000px;
@@ -67,7 +68,7 @@ function Header({ router }) {
     }
     let token = null;
     if(typeof window !== "undefined"){
-        token = localStorage.token;
+        token = tokenService.getToken();
     }
     useEffect(() => {
         if (token) {

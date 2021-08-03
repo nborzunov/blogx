@@ -2,11 +2,14 @@ import setAuthToken from '../../utils/setAuthToken';
 import * as types from '../types';
 import axios from 'axios';
 import { setError } from './errors.js';
+import tokenService from '../../utils/tokenService';
 
 export const getUser = () => async (dispatch) => {
     try {
-        let token = localStorage.getItem('token')
-        if(token) {
+        let token = tokenService.getToken();
+
+
+        if (token) {
             setAuthToken(token);
         }
 
@@ -21,6 +24,7 @@ export const getUser = () => async (dispatch) => {
             dispatch(setError(res.data.msg));
         }
     } catch (err) {
+        console.log(err.message);
         dispatch(setError(err.response.data.msg));
     }
 };
@@ -37,16 +41,15 @@ export const login = (formData) => async (dispatch) => {
         if (res.status === 200) {
             dispatch({
                 type: types.LOGIN_USER,
-                payload: res.data.token
+                payload: res.data.token,
             });
 
             dispatch(getUser());
             return 'ok';
         } else {
             dispatch(setError(res.data.msg));
-            return res.data
+            return res.data;
         }
-        
     } catch (err) {
         dispatch(setError(err.response.data.msg));
         return err.response.data;
@@ -62,20 +65,19 @@ export const signup = (formData) => async (dispatch) => {
     });
 
     try {
-        const res = await axios.post('/auth/signup', body);
+        const res = await axios.post('http://localhost:4000/auth/signup', body);
 
         if (res.status === 200) {
             dispatch({
                 type: types.LOGIN_USER,
-                payload: res.data.token
+                payload: res.data.token,
             });
             dispatch(getUser());
             return 'ok';
         } else {
             dispatch(setError(res.data.msg));
-            return res.data
+            return res.data;
         }
-
     } catch (err) {
         dispatch(setError(err.response.data.msg));
         return err.response.data;
