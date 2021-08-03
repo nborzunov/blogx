@@ -1,21 +1,39 @@
-import * as types from './types';
+import * as types from '../types';
 import axios from 'axios';
-import {setError} from './errors';
+import { setError } from './errors';
 
-export const getProfile = (id) => async dispatch => {
+export const getCurrentProfile = (token) => async (dispatch) => {
+    try {
+        const res = await axios.get(`http://localhost:4000/profile/`);
 
-    try{
-        const res = axios.get(`/profile/${id}`);
+        if (res.status === 200) {
 
-        if (res.status === 200){
             dispatch({
                 type: types.SET_PROFILE,
-                payload: res.data
-            })
+                payload: res.data,
+            });
+
+            return res.data;
         } else {
-            setError(res.error)
+            setError(res.error);
+
         }
-    } catch(err) {
-        setError(err.message)
+    } catch (err) {
+        setError(err.message);
     }
-}
+};
+
+export const updateProfile = (formData) => async (dispatch) => {
+    try {
+        const res = await axios.put(`http://localhost:4000/profile`, formData);
+
+        if (res.status === 200) {
+            console.log('success');
+            return;
+        }
+        console.log(res.error);
+        
+    } catch (err) {
+        console.log(err.message);
+    }
+};

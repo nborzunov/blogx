@@ -1,13 +1,9 @@
+import tokenService from '../../utils/tokenService';
 import * as types from '../types';
 
 
-const getLocalStorage = () => {
-    if (typeof window !== 'undefined') {
-        return localStorage
-    }
-}
 const initialState = {
-    token: (getLocalStorage())?.getItem('token'),
+    token: tokenService.getToken(),
     isAuth: false,
     name: '',
     surname: '',
@@ -17,10 +13,10 @@ const initialState = {
 };
 
 export const authReducer = (state = initialState, action) => {
-    const {type, payload} = action;
+    const { type, payload } = action;
     switch (type) {
         case types.LOGIN_USER:
-            (getLocalStorage())?.setItem('token', payload);
+            tokenService.setToken(payload);
             return { ...state, isAuth: true };
         case types.GET_USER:
             return {
@@ -30,10 +26,10 @@ export const authReducer = (state = initialState, action) => {
                 surname: payload.surname,
                 email: payload.email,
                 avatar: payload?.avatar,
-                isAuth: true
+                isAuth: true,
             };
         case types.LOGOUT:
-            (getLocalStorage())?.removeItem('token');
+            tokenService.removeToken();
             return { isAuth: false };
         default:
             return state;
