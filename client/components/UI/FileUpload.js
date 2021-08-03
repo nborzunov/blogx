@@ -24,7 +24,7 @@ const Label = styled.label`
 const Input = styled.input`
     display: none;
 `;
-export default function FileUpload({onChange, value, name}) {
+export default function FileUpload({onChange, value, name, title}) {
     let [file, setFile] = useState(null);
 
     let handleChange = function(e) {
@@ -34,7 +34,7 @@ export default function FileUpload({onChange, value, name}) {
 
     return (
         <InputWrapper>
-            <Label htmlFor="upload">{file ? file.name : 'Upload File'}</Label>
+            <Label htmlFor="upload">{file ? file.name : title}</Label>
             <Input name={name} value={value} id="upload" type="file" onChange={handleChange}/>
         </InputWrapper>
     );
