@@ -28,11 +28,14 @@ router.get("/", auth, async (req, res) => {
   try {
     const profile = await Profile.findOne({ user: req.user.id }).populate("user", ["name", "surname", "avatar"]);
 
+
     if (!profile) {
       return res.status(400).json({ msg: "There is no profile for this user" });
     }
 
-    res.json(profile);
+    profile.avatar = profile.user.avatar;
+    
+    res.status(200).send(profile);
   } catch (err) {
     console.error(err.message);
     res.status(500).send("Server Error");
@@ -64,7 +67,9 @@ router.put(
   ],
   async (req, res) => {
     const { age, country, city, aboutme } = req.body;
-    const avatarFile = req.files.avatar[0];
+
+
+
     const profileFields = {};
     profileFields.user = req.user.id;
 
@@ -72,6 +77,7 @@ router.put(
     if (country) profileFields.country = country;
     if (city) profileFields.city = city;
     if (aboutme) profileFields.aboutme = aboutme;
+
 
     try {
       let user = await User.findById({ _id: new mongoose.Types.ObjectId(req.user.id) });
@@ -95,7 +101,23 @@ router.put(
 
         res.status(200).send(profile);
       }
-      uploadFile(avatarFile, saveAvatar);
+
+      if(req.files.avatar) {
+        uploadFile(req.files.avatar[0], saveAvatar);
+      } else {
+        let profile = await Profile.findOneAndUpdate(
+          { user: req.user.id },
+          {
+            $set: {
+              ...profileFields
+            },
+          },
+          { new: true, upsert: true }
+        );
+        
+        profile.save();
+      }
+      
     } catch (err) {
       console.error(err.message);
       res.status(500).send("Server error");
