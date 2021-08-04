@@ -23,25 +23,24 @@ const LinkWrapper = styled.div`
     margin: 3px 0;
 `;
 export default function RightSidebar({ profile }) {
+    function fillDatesWrapper() {
+        let result = [];
+        for (let key in profile.dates) {
+            result.push(
+                <LinkWrapper>
+                    <Link href="/" title={key + ': '} size="medium" />{' '}
+                    <span>{`${profile.dates[key]} posts`}</span>
+                </LinkWrapper>
+            );
+        }
+        return result
+    }
     return (
         <>
             {profile.dates && (
                 <SidebarWrapper>
                     <Heading variant="h4">Posts due by date </Heading>
-                    <DatesWrapper>
-                        {profile.dates.map((date) => (
-                            <LinkWrapper>
-                                <Link
-                                    href="/"
-                                    title={date + ': '}
-                                    size="medium"
-                                />{' '}
-                                <span>
-                                    {Math.random() > 0.5 ? '1 post' : '2 posts'}
-                                </span>
-                            </LinkWrapper>
-                        ))}
-                    </DatesWrapper>
+                    <DatesWrapper>{fillDatesWrapper()}</DatesWrapper>
                 </SidebarWrapper>
             )}
         </>

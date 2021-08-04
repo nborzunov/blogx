@@ -130,18 +130,30 @@ router.get("/:user_id", async (req, res) => {
 
     let followers = await Profile.find({ following: { $all: [req.params.user_id] } }).length;
 
-    let posts = await Post.find({ author: req.params.user_id });
+    let posts = await Post.find({ author: req.params.user_id }).sort({ date: -1 });
 
     let comments = await Comment.find({ author: req.params.user_id }).length;
 
-    let newestPost = await Post.findOne({ author: req.params.user_id }).findOne({}, { sort: { date: -1 } });
+    let newestPost = await Post.findOne({ author: req.params.user_id }).sort({ date: -1 });
 
     let mostLikedPost = await Post.findOne({ author: req.params.user_id }).sort({ liked: -1 });
 
     let mostPopularPost = await Post.findOne({ author: req.params.user_id }).sort({ views: -1 });
 
-    let dates = await Post.find({ author: req.params.user_id }).map((post) => post.date);
+    let dates = {};
 
+    posts.map(post => {
+      var options = { month: 'long'};
+      let month = new Intl.DateTimeFormat('en-US', options).format(post.date);
+      let year = post.date.getFullYear();
+
+      if(dates[`${month} ${year}`]){
+        dates[`${month} ${year}`] += 1;
+      } else {
+        dates[`${month} ${year}`] = 1;
+      }
+    })
+    console.log(dates)
     const data = {
       id: profile._id,
       user: profile.user,
@@ -149,14 +161,14 @@ router.get("/:user_id", async (req, res) => {
       city: profile.city,
       avatar: profile.avatar,
       age: profile.age,
-      followers: followers,
+      followers: followers ? followers : 0,
       following: profile.following.length,
       posts: posts,
-      comments: comments,
+      comments: comments ? comment : 0,
       newestPost: newestPost,
       mostLikedPost: mostLikedPost,
       mostPopularPost: mostPopularPost,
-      dates: [],
+      dates: dates,
     };
 
     res.json(data);
