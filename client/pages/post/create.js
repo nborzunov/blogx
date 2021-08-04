@@ -116,6 +116,7 @@ export default function ProfilePage(props) {
                     <FileUpload
                         name="previewImage"
                         value={values.previewImage.src}
+                        title='Update image'
                         onChange={(e) =>
                             setValues({
                                 ...values,
