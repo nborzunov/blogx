@@ -10,12 +10,13 @@ import { useSelector } from 'react-redux';
 
 const MainPostWrapper = styled.div`
     width: 100%;
-    height: 350px;
     position: relative;
+    height: 350px;
 `;
 const StyledImage = styled(Image)`
     object-fit: cover;
     -webkit-filter: brightness(85%);
+    height: 350px;
 `;
 const CasualImage = styled.img`
     width: 952px;
@@ -50,6 +51,7 @@ const MainPostInfoContent = styled.div`
     & a {
         padding: 0;
         margin-left: 24px;
+        text-shadow: 3px 1px 4px rgba(0, 0, 0, 0.5);
     }
     top: 50%;
     transform: translateY(-50%);
@@ -169,8 +171,8 @@ export default function TopPost({ post, setPost, isPreview = false }) {
                     )}
                 </>
             )}
-
-            <InfoBox>
+            {post.liked && (
+                <InfoBox>
                 <div>
                     <ButtonWrapper>
                         <Button
@@ -203,6 +205,8 @@ export default function TopPost({ post, setPost, isPreview = false }) {
                     <div className="text">{post.views} views</div>
                 </ButtonWrapper>
             </InfoBox>
+            )}
+
 
             <MainPostInfoContent>
                 <Heading variant="h1">{post.title}</Heading>

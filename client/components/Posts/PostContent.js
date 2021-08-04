@@ -28,18 +28,21 @@ const DateText = styled.div``;
 export default function PostContent({ post }) {
     return (
         <PostContentWrapper>
-            <InfoContainer>
-                <ProfileLink
-                    target="_blank"
-                    href={`/profile/${post.author._id}`}
-                >
-                    <Avatar size="extrasmall" src={post.author.avatar} />{' '}
-                    {post.author.name} {post.author.surname}
-                </ProfileLink>
-                <DateText>
-                    at {moment(post.date).format('Do MMMM, H:mm')}
-                </DateText>
-            </InfoContainer>
+            {post.author && (
+                <InfoContainer>
+                    <ProfileLink
+                        target="_blank"
+                        href={`/profile/${post.author._id}`}
+                    >
+                        <Avatar size="extrasmall" src={post.author.avatar} />{' '}
+                        {post.author.name} {post.author.surname}
+                    </ProfileLink>
+                    <DateText>
+                        at {moment(post.date).format('Do MMMM, H:mm')}
+                    </DateText>
+                </InfoContainer>
+            )}
+
             <Markdown>{post.body}</Markdown>
         </PostContentWrapper>
     );
