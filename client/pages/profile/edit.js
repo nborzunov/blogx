@@ -16,6 +16,10 @@ import {
 } from '../../components/UI';
 import { updateProfile } from '../../store/actions/profile';
 import { createRef } from 'react';
+import TwitterIcon from '@material-ui/icons/Twitter';
+import FacebookIcon from '@material-ui/icons/Facebook';
+import InstagramIcon from '@material-ui/icons/Instagram';
+import LanguageIcon from '@material-ui/icons/Language';
 
 const EditWrapper = styled.div`
     width: 1000px;
@@ -26,18 +30,24 @@ const EditWrapper = styled.div`
         & > * {
             margin: 16px 0;
         }
-        & input {
+        & > input {
             width: 100%;
         }
-        & textarea {
+        & > textarea {
             width: 100%;
             min-height: 200px;
             height: auto;
         }
-        & button {
+        & > button {
             margin-left: 20px;
             margin-bottom: 24px;
         }
+    }
+`;
+
+const SocialBox = styled.div`
+    & > input {
+        width: 100%;
     }
 `;
 
@@ -66,6 +76,11 @@ export default function EditProfilePage({ profileData }) {
             city: profileData.city ? profileData.city : '',
             avatar: '',
             aboutme: profileData.aboutme ? profileData.aboutme : '',
+            twitter: profileData.twitter ? profileData.twitter : '',
+            facebook: profileData.facebook ? profileData.facebook : '',
+            instagram: profileData.instagram ? profileData.instagram : '',
+            website: profileData.website ? profileData.website : '',
+
         },
         validationSchema: Yup.object({
             // title: Yup.string()
@@ -80,7 +95,9 @@ export default function EditProfilePage({ profileData }) {
             // body: Yup.string().required('Body is required'),
         }),
         onSubmit: async (values) => {
-            const result = await dispatch(updateProfile(new FormData(formRef.current)));
+            const result = await dispatch(
+                updateProfile(new FormData(formRef.current))
+            );
         },
     });
 
@@ -109,6 +126,8 @@ export default function EditProfilePage({ profileData }) {
                         onChange={handleChange}
                     />
 
+                    <Heading variant="h1">Avatar</Heading>
+
                     <FileUpload
                         name="avatar"
                         value={values.avatar.src}
@@ -121,12 +140,71 @@ export default function EditProfilePage({ profileData }) {
                         }
                     />
 
+                    <Heading variant="h1">Socials</Heading>
+
+                    <SocialBox>
+                        <Input
+                            type="text"
+                            placeholder="Twitter, e.g. twitter.com/blogx"
+                            name="twitter"
+                            withIcon="true"
+                            value={values.twitter}
+                            onChange={handleChange}
+                            onBlur={handleBlur}
+                            // error={touched.email && errors.email ? errors.email : null}
+                        />
+                        <TwitterIcon />
+                    </SocialBox>
+
+                    <SocialBox>
+                        <Input
+                            type="text"
+                            placeholder="Facebook, e.g. facebook.com/blogx"
+                            name="facebook"
+                            withIcon="true"
+                            value={values.facebook}
+                            onChange={handleChange}
+                            onBlur={handleBlur}
+                            // error={touched.email && errors.email ? errors.email : null}
+                        />
+                        <FacebookIcon />
+                    </SocialBox>
+
+                    <SocialBox>
+                        <Input
+                            type="text"
+                            placeholder="Instagram, e.g. instagram.com/blogx"
+                            name="instagram"
+                            withIcon="true"
+                            value={values.instagram}
+                            onChange={handleChange}
+                            onBlur={handleBlur}
+                            // error={touched.email && errors.email ? errors.email : null}
+                        />
+                        <InstagramIcon />
+                    </SocialBox>
+
+                    <SocialBox>
+                        <Input
+                            type="text"
+                            placeholder="Website, e.g. mywebsite.com"
+                            name="website"
+                            withIcon="true"
+                            value={values.website}
+                            onChange={handleChange}
+                            onBlur={handleBlur}
+                            // error={touched.email && errors.email ? errors.email : null}
+                        />
+                        <LanguageIcon />
+                    </SocialBox>
+
+                    <Heading variant="h1">About me</Heading>
                     <TextField
                         placeholder="About me.."
                         name="aboutme"
                         value={values.aboutme}
                         onChange={handleChange}
-                    ></TextField>
+                    />
 
                     <Button variant="submit" type="submit">
                         Update profile
@@ -137,9 +215,8 @@ export default function EditProfilePage({ profileData }) {
     );
 }
 
-EditProfilePage.getInitialProps = async ({req}) => {
-    try{
-        console.log(req.cookies.token)
+EditProfilePage.getInitialProps = async ({ req }) => {
+    try {
         const res = await axios.get(`http://localhost:4000/profile`, {
             headers: {
                 'x-auth-token': req.cookies.token,
@@ -149,13 +226,11 @@ EditProfilePage.getInitialProps = async ({req}) => {
         if (res.status === 200) {
             return { profileData: res.data };
         } else {
-            console.error(res.data.msg)
+            console.error(res.data.msg);
             return { profileData: {} };
         }
-    } catch(err){
-        console.error(err.message)
+    } catch (err) {
+        console.error(err.message);
         return { profileData: {} };
     }
-
-
 };
