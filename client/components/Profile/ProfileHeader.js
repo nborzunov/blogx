@@ -217,7 +217,9 @@ export default function ProfileHeader({ profile }) {
                             </InfoItem>
 
                             <InfoItem>
-                                <InfoItemTitle>{profile.posts.length}</InfoItemTitle>
+                                <InfoItemTitle>
+                                    {profile.posts.length}
+                                </InfoItemTitle>
                                 <InfoItemText>Posts</InfoItemText>
                             </InfoItem>
 
@@ -229,40 +231,42 @@ export default function ProfileHeader({ profile }) {
                             </InfoItem>
                         </InfoBox>
 
-                        <SocialsBox>
-                            {profile.socials.twitter && (
-                                <SocialsItem
-                                    href={profile.socials.twitter}
-                                    className="twitter"
-                                >
-                                    <TwitterIcon />
-                                </SocialsItem>
-                            )}
-                            {profile.socials.facebook && (
-                                <SocialsItem
-                                    href={profile.socials.facebook}
-                                    className="facebook"
-                                >
-                                    <FacebookIcon />
-                                </SocialsItem>
-                            )}
-                            {profile.socials.instagram && (
-                                <SocialsItem
-                                    href={profile.socials.instagram}
-                                    className="instagram"
-                                >
-                                    <InstagramIcon />
-                                </SocialsItem>
-                            )}
-                            {profile.socials.website && (
-                                <SocialsItem
-                                    href={profile.socials.website}
-                                    className="website"
-                                >
-                                    <LanguageIcon />
-                                </SocialsItem>
-                            )}
-                        </SocialsBox>
+                        {profile.socials && (
+                            <SocialsBox>
+                                {profile.socials.twitter && (
+                                    <SocialsItem
+                                        href={profile.socials.twitter}
+                                        className="twitter"
+                                    >
+                                        <TwitterIcon />
+                                    </SocialsItem>
+                                )}
+                                {profile.socials.facebook && (
+                                    <SocialsItem
+                                        href={profile.socials.facebook}
+                                        className="facebook"
+                                    >
+                                        <FacebookIcon />
+                                    </SocialsItem>
+                                )}
+                                {profile.socials.instagram && (
+                                    <SocialsItem
+                                        href={profile.socials.instagram}
+                                        className="instagram"
+                                    >
+                                        <InstagramIcon />
+                                    </SocialsItem>
+                                )}
+                                {profile.socials.website && (
+                                    <SocialsItem
+                                        href={profile.socials.website}
+                                        className="website"
+                                    >
+                                        <LanguageIcon />
+                                    </SocialsItem>
+                                )}
+                            </SocialsBox>
+                        )}
                     </ProfileInfo>
                 </ProfileContent>
             </ProfileCard>
