@@ -70,14 +70,8 @@ router.put(
 
 
 
-    const profileFields = {};
+    const profileFields = req.body;
     profileFields.user = req.user.id;
-
-    if (age) profileFields.age = age;
-    if (country) profileFields.country = country;
-    if (city) profileFields.city = city;
-    if (aboutme) profileFields.aboutme = aboutme;
-
 
     try {
       let user = await User.findById({ _id: new mongoose.Types.ObjectId(req.user.id) });
