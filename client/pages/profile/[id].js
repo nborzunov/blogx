@@ -11,7 +11,7 @@ import LeftSidebar from './../../components/Profile/LeftSidebar';
 import ProfileContent from './../../components/Profile/ProfileContent';
 import RightSidebar from './../../components/Profile/RightSidebar';
 
-function ProfilePage({ profile, loading = true, error }) {
+export default function ProfilePage({ profile, loading = true, error }) {
     const router = useRouter();
 
     

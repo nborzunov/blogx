@@ -12,7 +12,6 @@ const ProfileContentWrapper = styled.div`
     position: static;
     display: flex;
     flex-direction: column;
-    min-height: 1000px;
     max-width: 1000px;
     margin-bottom: 32px;
 `;
@@ -23,6 +22,9 @@ const TabNavigation = styled.div`
 
 const TabContent = styled.div`
     margin: 0 24px;
+    & img {
+        height: 350px;
+    }
 `;
 
 const PostsCardsWrapper = styled.div`

@@ -19,9 +19,11 @@ const Grid = styled.div`
     display: grid;
     max-width: 1600px;
     min-height: calc(100vh - 200px);
-    grid-template-columns: 300px 1000px 300px;
+    grid-template-columns: 284px 1000px 284px;
     gap: 16px;
+    margin-top: 100px;
 `;
+
 export default function LargeLayout({ title, description, children }) {
     return (
         <>
