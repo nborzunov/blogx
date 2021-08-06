@@ -8,7 +8,6 @@ export const getUser = () => async (dispatch) => {
     try {
         let token = tokenService.getToken();
 
-
         if (token) {
             setAuthToken(token);
         }
@@ -82,4 +81,17 @@ export const signup = (formData) => async (dispatch) => {
         dispatch(setError(err.response.data.msg));
         return err.response.data;
     }
+};
+
+export const logout = () => async (dispatch) => {
+
+        setAuthToken();
+
+        dispatch({
+            type: types.LOGOUT,
+        });
+        dispatch({
+            type: types.CLEAR_PROFILE,
+        });
+
 };

@@ -30,7 +30,15 @@ export const authReducer = (state = initialState, action) => {
             };
         case types.LOGOUT:
             tokenService.removeToken();
-            return { isAuth: false };
+            return {
+                token: null,
+                isAuth: false,
+                name: '',
+                surname: '',
+                email: '',
+                avatar: '',
+                id: null,
+            }
         default:
             return state;
     }

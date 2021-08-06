@@ -6,7 +6,7 @@ import LoginForm from '../Auth/LoginForm';
 import SignupForm from '../Auth/SignupForm';
 import styled from 'styled-components';
 import SearchInput from './SearchInput';
-import { getUser } from '../../store/actions/auth';
+import { getUser, logout } from '../../store/actions/auth';
 import tokenService from '../../utils/tokenService';
 
 const HeaderWrapper = styled.div`
@@ -66,6 +66,11 @@ function Header({ router }) {
             },
         });
     }
+
+    function handleLogout() {
+        dispatch(logout())
+    }
+
     let token = null;
     if(typeof window !== "undefined"){
         token = tokenService.getToken();
@@ -130,7 +135,7 @@ function Header({ router }) {
                             />
 
                             <Link
-                                href={`/logout`}
+                                onClick={handleLogout}
                                 size="large"
                                 title="logout"
                             />

@@ -22,11 +22,11 @@ function MyApp(props) {
         if (jssStyles) {
             jssStyles.parentElement.removeChild(jssStyles);
         }
-        if (localStorage.token) {
-            setAuthToken(localStorage.token);
+        if (tokenService.getToken()) {
+            setAuthToken(tokenService.getToken());
         }
         axios.defaults.baseURL = 'http://localhost:4000/';
-        axios.defaults.headers.post['Content-Type'] = 'application/json';
+        axios.defaults.headers.common['Content-Type'] = 'application/json';
     }, []);
 
     useEffect(() => {

@@ -24,6 +24,17 @@ export const profileReducer = (state = initialState, action) => {
                 following: payload.following,
                 friends: payload.friends
             }
+        case types.CLEAR_PROFILE:
+            return {
+                isProfileExist: false,
+                user: null,
+                age: null,
+                country: null,
+                city: null,
+                avatar: null,
+                following: null,
+                friends: null
+            }
         default:
             return state
     }
