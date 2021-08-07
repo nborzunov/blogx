@@ -28,13 +28,12 @@ router.get("/", auth, async (req, res) => {
   try {
     const profile = await Profile.findOne({ user: req.user.id }).populate("user", ["name", "surname", "avatar"]);
 
-
     if (!profile) {
       return res.status(400).json({ msg: "There is no profile for this user" });
     }
 
     profile.avatar = profile.user.avatar;
-    
+
     res.status(200).send(profile);
   } catch (err) {
     console.error(err.message);
@@ -68,8 +67,6 @@ router.put(
   async (req, res) => {
     const { age, country, city, aboutme } = req.body;
 
-
-
     const profileFields = req.body;
     profileFields.user = req.user.id;
 
@@ -89,29 +86,28 @@ router.put(
           },
           { new: true, upsert: true }
         );
-        
+
         user.save();
         profile.save();
 
         res.status(200).send(profile);
       }
 
-      if(req.files.avatar) {
+      if (req.files.avatar) {
         uploadFile(req.files.avatar[0], saveAvatar);
       } else {
         let profile = await Profile.findOneAndUpdate(
           { user: req.user.id },
           {
             $set: {
-              ...profileFields
+              ...profileFields,
             },
           },
           { new: true, upsert: true }
         );
-        
+
         profile.save();
       }
-      
     } catch (err) {
       console.error(err.message);
       res.status(500).send("Server error");
@@ -128,11 +124,11 @@ router.get("/:user_id", async (req, res) => {
 
     if (!profile) return res.status(400).json({ msg: "Profile not found" });
 
-    let followers = await Profile.find({ following: { $all: [req.params.user_id] } }).length;
+    let followers = await Profile.find({ following: { $elemMatch: { $eq: profile._id } } });
 
     let posts = await Post.find({ author: req.params.user_id }).sort({ date: -1 });
 
-    let comments = await Comment.find({ author: req.params.user_id }).length;
+    let comments = await Comment.find({ author: req.params.user_id });
 
     let newestPost = await Post.findOne({ author: req.params.user_id }).sort({ date: -1 });
 
@@ -142,18 +138,18 @@ router.get("/:user_id", async (req, res) => {
 
     let dates = {};
 
-    posts.map(post => {
-      var options = { month: 'long'};
-      let month = new Intl.DateTimeFormat('en-US', options).format(post.date);
+    posts.map((post) => {
+      var options = { month: "long" };
+      let month = new Intl.DateTimeFormat("en-US", options).format(post.date);
       let year = post.date.getFullYear();
 
-      if(dates[`${month} ${year}`]){
+      if (dates[`${month} ${year}`]) {
         dates[`${month} ${year}`] += 1;
       } else {
         dates[`${month} ${year}`] = 1;
       }
-    })
-    console.log(dates)
+    });
+
     const data = {
       id: profile._id,
       user: profile.user,
@@ -161,10 +157,10 @@ router.get("/:user_id", async (req, res) => {
       city: profile.city,
       avatar: profile.avatar,
       age: profile.age,
-      followers: followers ? followers : 0,
+      followers: followers.length,
       following: profile.following.length,
       posts: posts,
-      comments: comments ? comment : 0,
+      comments: comments.length,
       newestPost: newestPost,
       mostLikedPost: mostLikedPost,
       mostPopularPost: mostPopularPost,
@@ -176,6 +172,7 @@ router.get("/:user_id", async (req, res) => {
     if (err.kind == "ObjectId") {
       return res.status(400).json({ msg: "Profile not found" });
     }
+    console.error(err.message);
     res.status(500).send("Server Error");
   }
 });
@@ -193,5 +190,37 @@ router.delete("/", auth, async (req, res) => {
     res.status(500).send("Server Error");
   }
 });
+
+router.patch("/:user_id/togglefollow", auth, async (req, res) => {
+  try {
+    if (req.user.id != req.params.user_id) {
+      const followingProfile = await Profile.findOne({ user: req.params.user_id });
+      const followerProfile = await Profile.findOne({ user: req.user.id });
+
+      if (!followerProfile.following.includes(followingProfile._id)) {
+        followerProfile.following.push(followingProfile);
+        console.log("подписались");
+      } else {
+        console.log(followerProfile.following);
+        followerProfile.following = followerProfile.following.filter((item) => {
+          if (item !== followingProfile._id) {
+            console.log(item, followingProfile._id);
+            return item;
+          }
+        });
+        console.log(followerProfile.following);
+        console.log("отписались");
+      }
+      followerProfile.save();
+
+      res.status(200).send(followerProfile);
+    }
+  } catch (err) {
+    console.error(err.message);
+    res.status(500).send("Server Error");
+  }
+});
+
+
 
 module.exports = router;
