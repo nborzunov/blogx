@@ -1,10 +1,9 @@
 import React, { useState } from 'react';
-import { useDispatch } from 'react-redux';
 import styled from 'styled-components';
 import Heading from './../UI/Heading';
 import Comment from './TopComment';
 import TextArea from './CommentTextArea';
-import {createComment} from '../../store/actions/posts';
+import * as postAPI from '../../api/PostAPI/PostAPI';
 
 const CommentsContainer = styled.div`
     padding: 24px;
@@ -21,15 +20,13 @@ function Comments({ post }) {
 
     const [comments, setComments] = useState(post.comments);
 
-    const dispatch = useDispatch();
-
     async function handleSubmit(e) {
         e.preventDefault();
-        const comments = await dispatch(createComment(post._id, newComment));
+        const res = await postAPI.createComment(post._id, newComment);
+        setComments(res.data);
 
         e.target.blur();
         setNewComment('');
-        setComments(comments);
     }
 
     function handleKeyPress(e) {
