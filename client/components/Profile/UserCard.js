@@ -1,8 +1,8 @@
 import styled from 'styled-components';
-import { Avatar, Button, Link } from '../UI';
+import { Avatar, Link } from '../UI';
+import * as profileAPI from '../../api/ProfileAPI/ProfileAPI';
 import avatar from '../../assets/images/avatar.png';
 import MoreHorizIcon from '@material-ui/icons/MoreHoriz';
-import axios from 'axios';
 
 const Wrapper = styled.div`
     width: 100%;
@@ -56,17 +56,21 @@ const Menu = styled.div`
     border: 1px solid #888;
     z-index: 500;
 `;
-export default function UserCard({ profile, setProfile, isFollowing, isAuthor }) {
-
+export default function UserCard({
+    profile,
+    setProfile,
+    isFollowing,
+    isAuthor,
+}) {
     async function handleFollow() {
         try {
-            const res = await axios.patch(`http://localhost:4000/profile/${profile.user._id}/togglefollow`)
+            const res = await profileAPI.toggleFollow(profile.user._id);
 
-            if(res.status == 200) {
-                setProfile({...profile, following: res.data})
+            if (res.status == 200) {
+                setProfile({ ...profile, following: res.data });
             }
-        } catch(err) {
-            console.error(err.message)
+        } catch (err) {
+            console.error(err.message);
         }
     }
     return (
@@ -89,10 +93,10 @@ export default function UserCard({ profile, setProfile, isFollowing, isAuthor })
                     <Menu className="menu">
                         {isAuthor && (
                             <Link
-                            size="small"
-                            title={isFollowing ? 'Unfollow' : 'Follow'}
-                            onClick={handleFollow}
-                        />
+                                size="small"
+                                title={isFollowing ? 'Unfollow' : 'Follow'}
+                                onClick={handleFollow}
+                            />
                         )}
 
                         <Link

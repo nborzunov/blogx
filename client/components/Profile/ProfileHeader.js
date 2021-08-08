@@ -1,16 +1,15 @@
 import styled from 'styled-components';
+import { useSelector } from 'react-redux';
 import LocationOnIcon from '@material-ui/icons/LocationOn';
 import avatar from '../../assets/images/avatar.png';
-import { Avatar } from '../UI';
+import { Avatar, Button } from '../UI';
 import TwitterIcon from '@material-ui/icons/Twitter';
 import FacebookIcon from '@material-ui/icons/Facebook';
 import InstagramIcon from '@material-ui/icons/Instagram';
 import LanguageIcon from '@material-ui/icons/Language';
-import { Button } from '../UI';
 import MoreHorizIcon from '@material-ui/icons/MoreHoriz';
 import ReportProblemIcon from '@material-ui/icons/ReportProblem';
-import { useSelector } from 'react-redux';
-import axios from 'axios';
+import * as profileAPI from '../../../api/ProfileAPI/ProfileAPI';
 
 const ProfileCard = styled.div`
     margin-top: 16px;
@@ -169,7 +168,7 @@ export default function ProfileHeader({ profile }) {
     const { id } = useSelector((state) => state.auth);
 
     async function handleFollow() {
-        await axios.patch(`/profile/${profile.user._id}/togglefollow`);
+        return await profileAPI.toggleFollow(profile.user._id);
     }
     return (
         <>

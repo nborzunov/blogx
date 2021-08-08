@@ -1,11 +1,10 @@
+import * as Yup from 'yup';
+import styled from 'styled-components';
 import { useRouter } from 'next/router';
-import Layout from '../../components/Layout/Layout';
-import axios from 'axios';
+import { createRef } from 'react';
 import { useSelector } from 'react-redux';
 import { useFormik } from 'formik';
 import { useDispatch } from 'react-redux';
-import styled from 'styled-components';
-import * as Yup from 'yup';
 import {
     Button,
     FileUpload,
@@ -15,11 +14,12 @@ import {
     TextField,
 } from '../../components/UI';
 import { updateProfile } from '../../store/actions/profile';
-import { createRef } from 'react';
+import Layout from '../../components/Layout/Layout';
 import TwitterIcon from '@material-ui/icons/Twitter';
 import FacebookIcon from '@material-ui/icons/Facebook';
 import InstagramIcon from '@material-ui/icons/Instagram';
 import LanguageIcon from '@material-ui/icons/Language';
+import * as profile from '../../api/ProfileAPI/ProfileAPI';
 
 const EditWrapper = styled.div`
     width: 1000px;
@@ -80,7 +80,6 @@ export default function EditProfilePage({ profileData }) {
             facebook: profileData.facebook ? profileData.facebook : '',
             instagram: profileData.instagram ? profileData.instagram : '',
             website: profileData.website ? profileData.website : '',
-
         },
         validationSchema: Yup.object({
             // title: Yup.string()
@@ -217,11 +216,7 @@ export default function EditProfilePage({ profileData }) {
 
 EditProfilePage.getInitialProps = async ({ req }) => {
     try {
-        const res = await axios.get(`http://localhost:4000/profile`, {
-            headers: {
-                'x-auth-token': req.cookies.token,
-            },
-        });
+        const res = await profile.getCurrentProfile(req.cookies.token);
 
         if (res.status === 200) {
             return { profileData: res.data };
