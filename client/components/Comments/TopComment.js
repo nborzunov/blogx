@@ -1,10 +1,9 @@
 import React, { useState, createRef } from 'react';
 import styled from 'styled-components';
-
 import TextArea from './CommentTextArea';
 import CommentItem from './CommentItem';
-import { useDispatch, useSelector } from 'react-redux';
-import { createReplyToComment, deleteComment } from '../../store/actions/posts';
+import { useSelector } from 'react-redux';
+import * as postAPI from '../../api/PostAPI/PostAPI';
 
 const ReplyWrapper = styled.div`
     margin-top: 4px;
@@ -25,6 +24,7 @@ const ReplyingToLabel = styled.div`
     top: 4px;
     right: 8px;
 `;
+
 function Comment({ comment, ownerId, setComments }) {
     const [replies, setReplies] = useState(Boolean(comment.replies.length));
     const [replyText, setReplyText] = useState('');
@@ -33,19 +33,23 @@ function Comment({ comment, ownerId, setComments }) {
 
     const textAreaRef = createRef();
 
-    const dispatch = useDispatch();
-
     const { isAuth, id } = useSelector((state) => state.auth);
 
     async function handleSubmit(e) {
         e.preventDefault();
-        const comments = await dispatch(createReplyToComment(comment.post, replyId ? replyId : comment._id, replyText));
+        const res = await postAPI.createReplyToComment(
+            comment.post,
+            replyId ? replyId : comment._id,
+            replyText
+        );
+
+        setComments(res.data);
 
         setReplyText('');
         setReplyId(null);
         setReplyUser(null);
         e.target.blur();
-        setComments(comments);
+
     }
 
     function handleKeyPress(e) {
@@ -61,8 +65,8 @@ function Comment({ comment, ownerId, setComments }) {
     }
 
     async function handleDelete(commentId) {
-        const comments = await dispatch(deleteComment(comment.post, commentId));
-        setComments(comments);
+        const res = await postAPI.deleteComment(comment.post, commentId);
+        setComments(res.data);
     }
     return (
         <>

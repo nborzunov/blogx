@@ -1,12 +1,12 @@
 import styled from 'styled-components';
 import Image from 'next/image';
-import { Heading, Link } from '../UI';
+import { useSelector } from 'react-redux';
 import { useEffect, useState } from 'react';
+import { Heading, Link } from '../UI';
 import ThumbUpIcon from '@material-ui/icons/ThumbUp';
 import ThumbDownIcon from '@material-ui/icons/ThumbDown';
 import VisibilityIcon from '@material-ui/icons/Visibility';
-import axios from 'axios';
-import { useSelector } from 'react-redux';
+import * as postAPI from '../../api/PostAPI/PostAPI';
 
 const MainPostWrapper = styled.div`
     width: 100%;
@@ -147,16 +147,12 @@ export default function TopPost({ post, setPost, isPreview = false }) {
     }, [post.previewImage]);
 
     async function likePost() {
-        const res = await axios.put(
-            `http://localhost:4000/post/${post._id}/like`
-        );
+        const res = await postAPI.likePost(post._id)
 
         setPost(res.data);
     }
     async function dislikePost() {
-        const res = await axios.put(
-            `http://localhost:4000/post/${post._id}/dislike`
-        );
+        const res = await postAPI.dislikePost(post._id)
 
         setPost(res.data);
     }

@@ -1,5 +1,5 @@
 import { useFormik } from 'formik';
-import Markdown from 'markdown-to-jsx';
+import { createRef } from 'react';
 import { useDispatch } from 'react-redux';
 import styled from 'styled-components';
 import * as Yup from 'yup';
@@ -15,8 +15,6 @@ import { createPost } from '../../store/actions/posts';
 import Layout from './../../components/Layout/Layout';
 import TopPost from './../../components/Posts/TopPost';
 import PostContent from './../../components/Posts/PostContent';
-import { createRef, useState } from 'react';
-import { setError } from '../../store/actions/errors';
 
 const EditWrapper = styled.div`
     width: 1000px;
