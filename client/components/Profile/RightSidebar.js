@@ -27,13 +27,13 @@ export default function RightSidebar({ profile }) {
         let result = [];
         for (let key in profile.dates) {
             result.push(
-                <LinkWrapper>
+                <LinkWrapper key={key}>
                     <Link href="/" title={key + ': '} size="medium" />{' '}
                     <span>{`${profile.dates[key]} posts`}</span>
                 </LinkWrapper>
             );
         }
-        return result
+        return result;
     }
     return (
         <>

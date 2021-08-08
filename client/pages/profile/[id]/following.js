@@ -4,7 +4,7 @@ import { useSelector } from 'react-redux';
 import Layout from '../../../components/Layout/Layout';
 import UserCard from '../../../components/Profile/UserCard';
 import { Heading } from '../../../components/UI';
-import * as profile from '../../../api/ProfileAPI/ProfileAPI';
+import * as profileAPI from '../../../api/ProfileAPI/ProfileAPI';
 
 const ContentWrapper = styled.div`
     width: 1000px;
@@ -47,7 +47,7 @@ export default function FollowersPage(props) {
 
 export async function getServerSideProps(req, res) {
     try {
-        const res = await profile.getProfileWithFollowing(req.params.id);
+        const res = await profileAPI.getProfileWithFollowing(req.params.id);
 
         if (res.status == 200) {
             console.log('success');
