@@ -32,7 +32,7 @@ function Header({ router }) {
     );
 
     const dispatch = useDispatch();
-
+    
     function onCloseModal() {
         const { modal, ...query } = router.query;
         router.push({
@@ -68,11 +68,11 @@ function Header({ router }) {
     }
 
     function handleLogout() {
-        dispatch(logout())
+        dispatch(logout());
     }
 
     let token = null;
-    if(typeof window !== "undefined"){
+    if (typeof window !== 'undefined') {
         token = tokenService.getToken();
     }
     useEffect(() => {

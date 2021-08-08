@@ -12,6 +12,7 @@ import '../styles/globals.css';
 import { useRouter } from 'next/router';
 import { pageview } from '../utils/gtag';
 import ErrorBoundary from '../components/ErrorBoundary/ErrorBoundary';
+import tokenService from '../utils/tokenService';
 
 function MyApp(props) {
     const { Component, pageProps } = props;
