@@ -216,7 +216,7 @@ router.patch("/:user_id/togglefollow", auth, async (req, res) => {
 // get all profile`s followers
 router.get("/:user_id/followers", async (req, res) => {
   try {
-    const profile = await Profile.findOne({ user: req.params.user_id }).select(['user', 'following']).populate("user", ["name", "surname"]);
+    const profile = await Profile.findOne({ user: req.params.user_id }).select(["user", "following"]).populate("user", ["name", "surname"]);
 
     if (!profile) {
       res.status(404).send("Profile not found");
@@ -230,6 +230,38 @@ router.get("/:user_id/followers", async (req, res) => {
       profile,
       followers,
     });
+  } catch (err) {
+    console.error(err.message);
+    res.status(500).send("Server Error");
+  }
+});
+
+// get all profile`s following users
+router.get("/:user_id/following", async (req, res) => {
+  try {
+    const profile = await Profile.findOne({ user: req.params.user_id })
+      .select(["user", "following"])
+      .populate([
+        {
+          path: "user",
+          select: "name surname",
+        },
+        {
+          path: "following",
+          model: "Profile",
+          select: "user country city",
+          populate: {
+            path: "user",
+            select: "name surname avatar",
+          },
+        },
+      ]);
+
+    if (!profile) {
+      res.status(404).send("Profile not found");
+    }
+
+    res.status(200).send(profile);
   } catch (err) {
     console.error(err.message);
     res.status(500).send("Server Error");
