@@ -221,6 +221,27 @@ router.patch("/:user_id/togglefollow", auth, async (req, res) => {
   }
 });
 
+// get all profile`s followers
+router.get("/:user_id/followers", async (req, res) => {
+  try {
+    const profile = await Profile.findOne({ user: req.params.user_id }).select(['user', 'following']).populate("user", ["name", "surname"]);
 
+    if (!profile) {
+      res.status(404).send("Profile not found");
+    }
+
+    const followers = await Profile.find({ following: { $elemMatch: { $eq: profile._id } } })
+      .select(["user", "country", "city"])
+      .populate("user", ["name", "surname", "avatar"]);
+
+    res.status(200).send({
+      profile,
+      followers,
+    });
+  } catch (err) {
+    console.error(err.message);
+    res.status(500).send("Server Error");
+  }
+});
 
 module.exports = router;
