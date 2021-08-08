@@ -9,6 +9,8 @@ import LanguageIcon from '@material-ui/icons/Language';
 import { Button } from '../UI';
 import MoreHorizIcon from '@material-ui/icons/MoreHoriz';
 import ReportProblemIcon from '@material-ui/icons/ReportProblem';
+import { useSelector } from 'react-redux';
+import axios from 'axios';
 
 const ProfileCard = styled.div`
     margin-top: 16px;
@@ -164,6 +166,11 @@ export default function ProfileHeader({ profile }) {
         return <h1>Profile not found</h1>;
     }
 
+    const { id } = useSelector((state) => state.auth);
+
+    async function handleFollow() {
+        await axios.patch(`/profile/${profile.user._id}/togglefollow`);
+    }
     return (
         <>
             <ProfileCard>
@@ -190,7 +197,9 @@ export default function ProfileHeader({ profile }) {
                                 </div>
 
                                 <ButtonBox>
-                                    <Button>Follow</Button>
+                                    <Button onClick={handleFollow}>
+                                        Follow
+                                    </Button>
                                     <Button variant="icon">
                                         <ReportProblemIcon />
                                     </Button>
