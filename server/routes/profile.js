@@ -191,6 +191,7 @@ router.delete("/", auth, async (req, res) => {
   }
 });
 
+// Follow/Unfollow profile
 router.patch("/:user_id/togglefollow", auth, async (req, res) => {
   try {
     if (req.user.id != req.params.user_id) {
@@ -199,21 +200,12 @@ router.patch("/:user_id/togglefollow", auth, async (req, res) => {
 
       if (!followerProfile.following.includes(followingProfile._id)) {
         followerProfile.following.push(followingProfile);
-        console.log("подписались");
       } else {
-        console.log(followerProfile.following);
-        followerProfile.following = followerProfile.following.filter((item) => {
-          if (item !== followingProfile._id) {
-            console.log(item, followingProfile._id);
-            return item;
-          }
-        });
-        console.log(followerProfile.following);
-        console.log("отписались");
+        followerProfile.following = followerProfile.following.filter((item) => String(item) != String(followingProfile._id));
       }
       followerProfile.save();
 
-      res.status(200).send(followerProfile);
+      res.status(200).send(followerProfile.following);
     }
   } catch (err) {
     console.error(err.message);

@@ -60,7 +60,7 @@ export default function UserCard({ profile, setProfile, isFollowing }) {
 
     async function handleFollow() {
         try {
-            const res = await axios.patch(`http://localhost:4000/profile/${profile.user._id}/follow`)
+            const res = await axios.patch(`http://localhost:4000/profile/${profile.user._id}/togglefollow`)
 
             if(res.status == 200) {
                 setProfile({...profile, following: res.data})

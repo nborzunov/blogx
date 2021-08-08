@@ -18,7 +18,7 @@ const ContentWrapper = styled.div`
 export default function FollowersPage(props) {
     const [profile, setProfile] = useState(props.profile);
     if (props.error) {
-        return <div>{error}</div>;
+        return <div>{props.error}</div>;
     }
 
     return (
