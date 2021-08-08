@@ -3,6 +3,7 @@ import * as types from '../types';
 import axios from 'axios';
 import { setError } from './errors.js';
 import tokenService from '../../utils/tokenService';
+import * as auth from '../../api/AuthAPI/AuthAPI';
 
 export const getUser = () => async (dispatch) => {
     try {
@@ -12,30 +13,26 @@ export const getUser = () => async (dispatch) => {
             setAuthToken(token);
         }
 
-        const res = await axios.get('http://localhost:4000/auth');
+        const res = await auth.getCurrentUser();
 
-        if (res.status === 200) {
+        if (res.status == 200) {
             dispatch({
                 type: types.GET_USER,
                 payload: res.data,
             });
+            return res.data;
         } else {
-            dispatch(setError(res.data.msg));
+            dispatch(setError(res.data));
         }
     } catch (err) {
         console.log(err.message);
-        dispatch(setError(err.response.data.msg));
+        dispatch(setError(err.message));
     }
 };
 
 export const login = (formData) => async (dispatch) => {
-    const body = JSON.stringify({
-        email: formData.email,
-        password: formData.password,
-    });
-
     try {
-        const res = await axios.post('http://localhost:4000/auth/login', formData);
+        const res = await await auth.login(formData)
 
         if (res.status === 200) {
             dispatch({
@@ -56,15 +53,8 @@ export const login = (formData) => async (dispatch) => {
 };
 
 export const signup = (formData) => async (dispatch) => {
-    const body = JSON.stringify({
-        name: formData.firstName,
-        surname: formData.lastName,
-        email: formData.email,
-        password: formData.password,
-    });
-
     try {
-        const res = await axios.post('http://localhost:4000/auth/signup', body);
+        const res =  await auth.signup(formData)
 
         if (res.status === 200) {
             dispatch({
@@ -84,14 +74,12 @@ export const signup = (formData) => async (dispatch) => {
 };
 
 export const logout = () => async (dispatch) => {
+    setAuthToken();
 
-        setAuthToken();
-
-        dispatch({
-            type: types.LOGOUT,
-        });
-        dispatch({
-            type: types.CLEAR_PROFILE,
-        });
-
+    dispatch({
+        type: types.LOGOUT,
+    });
+    dispatch({
+        type: types.CLEAR_PROFILE,
+    });
 };
