@@ -8,12 +8,20 @@ const config = require("config");
 const { check, validationResult } = require("express-validator");
 
 const User = require("../models/User");
+const Profile = require("../models/Profile");
 
 // get user by id
 router.get("/", auth, async (req, res) => {
   try {
-    const user = await User.findById(req.user.id).select("-password");
-    res.json(user);
+    const user = await User.findById(req.user.id)
+      .select("-password")
+      .exec(async (err, doc) => {
+        const profile = await Profile.findOne({ user: doc });
+
+        doc.set("profileId", profile._id, { strict: false });
+
+        res.status(200).send(doc);
+      });
   } catch (err) {
     console.error(err.message);
     res.status(500).send("Server Error");
