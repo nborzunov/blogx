@@ -3,7 +3,7 @@ import * as types from '../types';
 import axios from 'axios';
 import { setError } from './errors.js';
 import tokenService from '../../utils/tokenService';
-import * as auth from '../../api/AuthAPI/AuthAPI';
+import * as authAPI from '../../api/AuthAPI/AuthAPI';
 
 export const getUser = () => async (dispatch) => {
     try {
@@ -13,7 +13,7 @@ export const getUser = () => async (dispatch) => {
             setAuthToken(token);
         }
 
-        const res = await auth.getCurrentUser();
+        const res = await authAPI.getCurrentUser();
 
         if (res.status == 200) {
             dispatch({
@@ -32,7 +32,7 @@ export const getUser = () => async (dispatch) => {
 
 export const login = (formData) => async (dispatch) => {
     try {
-        const res = await await auth.login(formData)
+        const res = await await authAPI.login(formData)
 
         if (res.status === 200) {
             dispatch({
@@ -54,7 +54,7 @@ export const login = (formData) => async (dispatch) => {
 
 export const signup = (formData) => async (dispatch) => {
     try {
-        const res =  await auth.signup(formData)
+        const res =  await authAPI.signup(formData)
 
         if (res.status === 200) {
             dispatch({
