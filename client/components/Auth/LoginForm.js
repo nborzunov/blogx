@@ -52,7 +52,7 @@ export default function LoginForm({ onClose }) {
         }),
         onSubmit: async (values) => {
             setLoading(true);
-            const result = await dispatch(login(values));
+            const result = dispatch(login(values));
 
             if (result === 'ok') {
                 onClose();

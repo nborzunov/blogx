@@ -20,10 +20,10 @@ export default function SignupForm({ onClose, onOpenLoginModal }) {
 
     useEffect(() => {
         if (isAuth) {
-            const {modal, ...query} = router.query;
+            const { modal, ...query } = router.query;
             router.push({
                 pathname: router.pathname,
-                query: query
+                query: query,
             });
         }
     }, [isAuth]);
@@ -38,17 +38,17 @@ export default function SignupForm({ onClose, onOpenLoginModal }) {
         handleBlur,
     } = useFormik({
         initialValues: {
-            firstName: '',
-            lastName: '',
+            name: '',
+            surname: '',
             email: '',
             password: '',
         },
         validationSchema: Yup.object({
-            firstName: Yup.string()
+            name: Yup.string()
                 .required('Name is required')
                 .min(1, 'Too short!')
                 .max(50, 'Too long!'),
-            lastName: Yup.string()
+            surname: Yup.string()
                 .required('Surname is required')
                 .min(1, 'Too short!')
                 .max(50, 'Too long!'),
@@ -63,19 +63,19 @@ export default function SignupForm({ onClose, onOpenLoginModal }) {
         }),
         onSubmit: async (values) => {
             setLoading(true);
-            const result = await dispatch(signup(values));
+            const result = dispatch(signup(values));
 
             if (result === 'ok') {
                 onClose();
             } else {
                 if (result.errors[0].field === 'name') {
                     setErrors({
-                        firstName: result.errors[0].msg,
+                        name: result.errors[0].msg,
                     });
                 }
                 if (result.errors[0].field === 'surname') {
                     setErrors({
-                        lastName: result.errors[0].msg,
+                        surname: result.errors[0].msg,
                     });
                 }
                 if (result.errors[0].field === 'email') {
@@ -108,43 +108,37 @@ export default function SignupForm({ onClose, onOpenLoginModal }) {
             <Heading variant="h3">Sign Up</Heading>
 
             <>
-                <Error>
-                    {touched.firstName && errors.firstName
-                        ? errors.firstName
-                        : ''}
-                </Error>
+                <Error>{touched.name && errors.name ? errors.name : ''}</Error>
                 <Input
                     type="text"
-                    name="firstName"
+                    name="name"
                     placeholder="Name"
                     withIcon="true"
-                    value={values.firstName}
+                    value={values.name}
                     onChange={handleChange}
                     onBlur={handleBlur}
-                    error={
-                        touched.firstName && errors.firstName
-                            ? errors.firstName
-                            : null
-                    }
+                    error={touched.name && errors.name ? errors.name : null}
                 />
                 <PermIdentityIcon />
             </>
 
             <>
                 <Error>
-                    {touched.lastName && errors.lastName ? errors.lastName : ''}
+                    {touched.surname && errors.surname
+                        ? errors.surname
+                        : ''}
                 </Error>
                 <Input
                     type="text"
-                    name="lastName"
+                    name="surname"
                     placeholder="Surname"
                     withIcon="true"
-                    value={values.lastName}
+                    value={values.surname}
                     onChange={handleChange}
                     onBlur={handleBlur}
                     error={
-                        touched.lastName && errors.lastName
-                            ? errors.lastName
+                        touched.surname && errors.surname
+                            ? errors.surname
                             : null
                     }
                 />
