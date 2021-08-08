@@ -2,13 +2,11 @@ import * as types from '../types';
 
 const initialState = {
     isProfileExist: false,
-    user: null,
+    id: null,
     age: null,
+    user: null,
     country: null,
     city: null,
-    avatar: null,
-    following: null,
-    friends: null
 };
 
 export const profileReducer = (state = initialState, action) => {
@@ -16,24 +14,21 @@ export const profileReducer = (state = initialState, action) => {
     switch (type){
         case types.SET_PROFILE:
             return {
+                isProfileExist: true,
+                id: payload._id,
                 user: payload.user,
                 age: payload.age,
                 country: payload.country,
                 city: payload.city,
-                avatar: payload.avatar,
-                following: payload.following,
-                friends: payload.friends
             }
         case types.CLEAR_PROFILE:
             return {
                 isProfileExist: false,
-                user: null,
+                id: null,
                 age: null,
+                user: null,
                 country: null,
                 city: null,
-                avatar: null,
-                following: null,
-                friends: null
             }
         default:
             return state
