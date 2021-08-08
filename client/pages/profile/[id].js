@@ -4,7 +4,7 @@ import ProfileHeader from './../../components/Profile/ProfileHeader';
 import LeftSidebar from './../../components/Profile/LeftSidebar';
 import ProfileContent from './../../components/Profile/ProfileContent';
 import RightSidebar from './../../components/Profile/RightSidebar';
-import * as profile from '../../api/ProfileAPI/ProfileAPI';
+import * as profileAPI from '../../api/ProfileAPI/ProfileAPI';
 
 export default function ProfilePage({ profile, loading = true, error }) {
     return (
@@ -38,7 +38,7 @@ export default function ProfilePage({ profile, loading = true, error }) {
 
 export async function getServerSideProps({ params: { id }, res }) {
     try {
-        const res = await profile.getProfileByUserId(id);
+        const res = await profileAPI.getProfileByUserId(id);
 
         if (res.status === 200) {
             return { props: { profile: res.data, loading: false } };

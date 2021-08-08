@@ -1,6 +1,5 @@
 import * as Yup from 'yup';
 import styled from 'styled-components';
-import { useRouter } from 'next/router';
 import { createRef } from 'react';
 import { useSelector } from 'react-redux';
 import { useFormik } from 'formik';
@@ -19,7 +18,7 @@ import TwitterIcon from '@material-ui/icons/Twitter';
 import FacebookIcon from '@material-ui/icons/Facebook';
 import InstagramIcon from '@material-ui/icons/Instagram';
 import LanguageIcon from '@material-ui/icons/Language';
-import * as profile from '../../api/ProfileAPI/ProfileAPI';
+import * as profileAPI from '../../api/ProfileAPI/ProfileAPI';
 
 const EditWrapper = styled.div`
     width: 1000px;
@@ -52,8 +51,6 @@ const SocialBox = styled.div`
 `;
 
 export default function EditProfilePage({ profileData }) {
-    const router = useRouter();
-
     const dispatch = useDispatch();
 
     const { isAuth } = useSelector((state) => state.auth);
@@ -94,8 +91,8 @@ export default function EditProfilePage({ profileData }) {
             // body: Yup.string().required('Body is required'),
         }),
         onSubmit: async (values) => {
-            const result = await dispatch(
-                updateProfile(new FormData(formRef.current))
+            const res = await profileAPI.updateProfile(
+                new FormData(formRef.current)
             );
         },
     });
@@ -216,7 +213,7 @@ export default function EditProfilePage({ profileData }) {
 
 EditProfilePage.getInitialProps = async ({ req }) => {
     try {
-        const res = await profile.getCurrentProfile(req.cookies.token);
+        const res = await profileAPI.getCurrentProfile(req.cookies.token);
 
         if (res.status === 200) {
             return { profileData: res.data };

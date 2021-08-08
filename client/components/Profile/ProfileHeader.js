@@ -9,7 +9,7 @@ import InstagramIcon from '@material-ui/icons/Instagram';
 import LanguageIcon from '@material-ui/icons/Language';
 import MoreHorizIcon from '@material-ui/icons/MoreHoriz';
 import ReportProblemIcon from '@material-ui/icons/ReportProblem';
-import * as profileAPI from '../../../api/ProfileAPI/ProfileAPI';
+import * as profileAPI from '../../api/ProfileAPI/ProfileAPI';
 
 const ProfileCard = styled.div`
     margin-top: 16px;
