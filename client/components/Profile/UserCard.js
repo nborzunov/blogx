@@ -56,7 +56,7 @@ const Menu = styled.div`
     border: 1px solid #888;
     z-index: 500;
 `;
-export default function UserCard({ profile, setProfile, isFollowing }) {
+export default function UserCard({ profile, setProfile, isFollowing, isAuthor }) {
 
     async function handleFollow() {
         try {
@@ -87,11 +87,14 @@ export default function UserCard({ profile, setProfile, isFollowing }) {
                         <MoreHorizIcon />
                     </MenuButton>
                     <Menu className="menu">
-                        <Link
+                        {isAuthor && (
+                            <Link
                             size="small"
                             title={isFollowing ? 'Unfollow' : 'Follow'}
                             onClick={handleFollow}
                         />
+                        )}
+
                         <Link
                             size="small"
                             title="View Profile"

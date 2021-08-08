@@ -32,7 +32,7 @@ function Header({ router }) {
     );
 
     const dispatch = useDispatch();
-    
+
     function onCloseModal() {
         const { modal, ...query } = router.query;
         router.push({

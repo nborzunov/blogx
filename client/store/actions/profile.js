@@ -2,12 +2,11 @@ import * as types from '../types';
 import axios from 'axios';
 import { setError } from './errors';
 
-export const getCurrentProfile = (token) => async (dispatch) => {
+export const getCurrentProfile = () => async (dispatch) => {
     try {
         const res = await axios.get(`http://localhost:4000/profile/`);
 
         if (res.status === 200) {
-
             dispatch({
                 type: types.SET_PROFILE,
                 payload: res.data,

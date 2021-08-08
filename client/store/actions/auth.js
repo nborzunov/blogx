@@ -35,7 +35,7 @@ export const login = (formData) => async (dispatch) => {
     });
 
     try {
-        const res = await axios.post('http://localhost:4000/auth/login', body);
+        const res = await axios.post('http://localhost:4000/auth/login', formData);
 
         if (res.status === 200) {
             dispatch({

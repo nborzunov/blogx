@@ -17,23 +17,26 @@ const ContentWrapper = styled.div`
 `;
 
 export default function FollowersPage(props) {
-    const [profile, setProfile] = useState(props.profile);
+    const [profile, setProfile] = useState(props);
     if (props.error) {
         return <div>{props.error}</div>;
     }
 
     const profileId = useSelector((state) => state.auth.profileId);
+
     return (
         <Layout
-            title={`${profile?.user?.name} ${profile?.user?.surname}: followers`}
+            title={`${profile?.user?.name} ${profile?.user?.surname}: following`}
         >
             <ContentWrapper>
-                <Heading variant="h1">{`Followers of ${profile?.user?.name} ${profile?.user?.surname}`}</Heading>
-                {props.followers.map((follower) => (
+                <Heading variant="h1">{`Following users of ${profile?.user?.name} ${profile?.user?.surname}`}</Heading>
+                {profile.following.map((follower) => (
                     <UserCard
                         profile={follower}
                         setProfile={setProfile}
-                        isFollowing={profile.following.includes(follower._id)}
+                        isFollowing={profile.following.some(
+                            (item) => item._id == follower._id
+                        )}
                         isAuthor={profile._id == profileId}
                     />
                 ))}
@@ -45,16 +48,14 @@ export default function FollowersPage(props) {
 export async function getServerSideProps(req, res) {
     try {
         const res = await axios.get(
-            `http://localhost:4000/profile/${req.params.id}/followers`
+            `http://localhost:4000/profile/${req.params.id}/following`
         );
 
         if (res.status == 200) {
             console.log('success');
+            let { following, ...profile } = res.data;
             return {
-                props: {
-                    profile: res.data.profile,
-                    followers: res.data.followers,
-                },
+                props: res.data,
             };
         } else {
             return {

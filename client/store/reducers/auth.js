@@ -3,13 +3,13 @@ import * as types from '../types';
 
 
 const initialState = {
-    token: tokenService.getToken(),
     isAuth: false,
     name: '',
     surname: '',
     email: '',
     avatar: '',
     id: null,
+    profileId: null,
 };
 
 export const authReducer = (state = initialState, action) => {
@@ -27,6 +27,7 @@ export const authReducer = (state = initialState, action) => {
                 email: payload.email,
                 avatar: payload?.avatar,
                 isAuth: true,
+                profileId: payload.profileId
             };
         case types.LOGOUT:
             tokenService.removeToken();
@@ -38,6 +39,7 @@ export const authReducer = (state = initialState, action) => {
                 email: '',
                 avatar: '',
                 id: null,
+                profileId: null
             }
         default:
             return state;
