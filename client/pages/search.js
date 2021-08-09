@@ -1,9 +1,10 @@
-import axios from 'axios';
-import Layout from './../components/Layout/Layout';
 import styled from 'styled-components';
-import { Container, Heading } from '../components/UI';
-import PostCard from './../components/Posts/PostCard';
 import { useRouter } from 'next/router';
+import Layout from './../components/Layout/Layout';
+import PostCard from './../components/Posts/PostCard';
+import * as searchAPI from '../api/SearchAPI/SearchAPI';
+import { Container, Heading } from '../components/UI';
+
 const ContentWrapper = styled.div`
     padding: 24px;
     width: 1000px;
@@ -143,10 +144,10 @@ export async function getServerSideProps({ query }) {
     const searchQuery = query.query;
 
     try {
-        const res = await axios.get(
-            `http://localhost:4000/search/${query.type}?query=${encodeURI(
-                searchQuery
-            )}&page=${query.page}`
+        const res = await searchAPI.searchByQuery(
+            query.type,
+            encodeURI(searchQuery),
+            query.page
         );
         return {
             props: {
