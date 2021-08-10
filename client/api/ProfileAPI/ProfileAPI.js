@@ -20,7 +20,9 @@ export async function getProfileWithFollowing(userId) {
     return await axios.get(`http://localhost:4000/profile/${userId}/following`);
 }
 
-export async function getProfileWithPosts() {}
+export async function getProfileWithPosts(userId) {
+    return await axios.get(`http://localhost:4000/profile/${userId}/posts`);
+}
 
 export async function getProfileWithComments() {}
 

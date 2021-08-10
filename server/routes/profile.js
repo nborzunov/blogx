@@ -177,6 +177,7 @@ router.get("/:user_id", async (req, res) => {
   }
 });
 
+// Delete profile
 router.delete("/", auth, async (req, res) => {
   try {
     await Post.deleteMany({ user: req.user.id });
@@ -260,6 +261,26 @@ router.get("/:user_id/following", async (req, res) => {
     if (!profile) {
       res.status(404).send("Profile not found");
     }
+
+    res.status(200).send(profile);
+  } catch (err) {
+    console.error(err.message);
+    res.status(500).send("Server Error");
+  }
+});
+
+// get all profile`s posts
+router.get("/:user_id/posts", async (req, res) => {
+  try {
+    const profile = await Profile.findOne({ user: req.params.user_id }).select("user").populate("user", ["name", "surname"]);
+
+    if (!profile) {
+      res.status(404).send("Profile not found");
+    }
+
+    const posts = await Post.find({ author: req.params.user_id }).sort({ date: -1 });
+
+    profile.posts = posts;
 
     res.status(200).send(profile);
   } catch (err) {
