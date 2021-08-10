@@ -10,6 +10,7 @@ import LanguageIcon from '@material-ui/icons/Language';
 import MoreHorizIcon from '@material-ui/icons/MoreHoriz';
 import ReportProblemIcon from '@material-ui/icons/ReportProblem';
 import * as profileAPI from '../../api/ProfileAPI/ProfileAPI';
+import Link from 'next/link';
 
 const ProfileCard = styled.div`
     margin-top: 16px;
@@ -61,12 +62,11 @@ const Location = styled.div`
 
 const InfoBox = styled.div`
     display: flex;
-    justify-content: center;
     flex-wrap: wrap;
     align-items: flex-start;
 `;
 
-const InfoItem = styled.div`
+const InfoItem = styled.a`
     margin: 16px 0;
     @media screen and (max-width: 768px) {
         margin: 10px 0;
@@ -74,6 +74,12 @@ const InfoItem = styled.div`
     display: flex;
     & + & {
         margin-left: 14px;
+    }
+
+    transition: all 0.2s ease;
+    &:hover {
+        cursor: pointer;
+        opacity: 0.8;
     }
 `;
 
@@ -209,33 +215,33 @@ export default function ProfileHeader({ profile }) {
                             </TopWrapper>
                         )}
                         <InfoBox>
-                            <InfoItem>
-                                <InfoItemTitle>
-                                    {profile.followers}
-                                </InfoItemTitle>
-                                <InfoItemText>Followers</InfoItemText>
-                            </InfoItem>
+                            <Link href={`/profile/${profile.user._id}/followers`}>
+                                <InfoItem>
+                                    <InfoItemTitle>
+                                        {profile.followers}
+                                    </InfoItemTitle>
+                                    <InfoItemText>Followers</InfoItemText>
+                                </InfoItem>
+                            </Link>
 
-                            <InfoItem>
-                                <InfoItemTitle>
-                                    {profile.following}
-                                </InfoItemTitle>
-                                <InfoItemText>Following</InfoItemText>
-                            </InfoItem>
+                            <Link href={`/profile/${profile.user._id}/following`}>
+                                <InfoItem>
+                                    <InfoItemTitle>
+                                        {profile.following}
+                                    </InfoItemTitle>
+                                    <InfoItemText>Following</InfoItemText>
+                                </InfoItem>
+                            </Link>
 
-                            <InfoItem>
-                                <InfoItemTitle>
-                                    {profile.posts.length}
-                                </InfoItemTitle>
-                                <InfoItemText>Posts</InfoItemText>
-                            </InfoItem>
+                            <Link href={`/profile/${profile.user._id}/posts`}>
+                                <InfoItem>
+                                    <InfoItemTitle>
+                                        {profile.posts.length}
+                                    </InfoItemTitle>
+                                    <InfoItemText>Posts</InfoItemText>
+                                </InfoItem>
+                            </Link>
 
-                            <InfoItem>
-                                <InfoItemTitle>
-                                    {profile.comments}
-                                </InfoItemTitle>
-                                <InfoItemText>Comments</InfoItemText>
-                            </InfoItem>
                         </InfoBox>
                         <SocialsBox>
                             {profile.twitter && (
