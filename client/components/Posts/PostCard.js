@@ -7,12 +7,16 @@ const PostCardWrapper = styled.div`
     height: 180px;
     box-shadow: 0px 3px 9px rgba(43, 98, 169, 0.5);
     display: flex;
+    position: relative;
 `;
 
 const PostInfo = styled.div`
-    width: 316px;
+    width: 100%;
     height: 180px;
     padding: 16px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
     & h5 {
         margin: 4px 8px;
         overflow: hidden;
@@ -50,6 +54,7 @@ const StyledImage = styled(Image)`
 `;
 
 export default function PostCard({ post }) {
+    console.log(moment(post.date, "YYYYMMDD").fromNow())
     return (
         <PostCardWrapper>
             <PostInfo>
@@ -59,7 +64,7 @@ export default function PostCard({ post }) {
 
                 <PostInfoDate>
                     <Heading variant="h6">
-                        {moment().startOf(Date.parse(post.date)).fromNow()}
+                        {moment(post.date, "YYYYMMDD").fromNow()}
                     </Heading>
                 </PostInfoDate>
 
