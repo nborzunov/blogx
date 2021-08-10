@@ -16,7 +16,7 @@ const ContentWrapper = styled.div`
     }
 `;
 
-export default function FollowersPage(props) {
+export default function FollowingPage(props) {
     const [profile, setProfile] = useState(props);
     if (props.error) {
         return <div>{props.error}</div>;
