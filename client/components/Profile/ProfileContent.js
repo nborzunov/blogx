@@ -42,7 +42,7 @@ const PostsGrid = styled.div`
 export default function ProfileContent({ profile }) {
     const [currentTab, setCurrentTab] = useState(0);
 
-    const profileId = useSelector(state => state.auth.profileId);
+    const profileId = useSelector((state) => state.auth.profileId);
 
     const choosenPosts = [
         profile.newestPost,
@@ -87,7 +87,9 @@ export default function ProfileContent({ profile }) {
             <PostsCardsWrapper>
                 <Heading variant="h1">
                     Posts: <small>{profile.posts.length} posts</small>{' '}
-                    <Link title="All posts.." href="/" size="medium" />
+                    <Link href="/" size="medium">
+                        All posts..
+                    </Link>
                 </Heading>
                 <PostsGrid>
                     {profile.posts.map((post) => (

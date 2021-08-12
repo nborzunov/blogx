@@ -8,6 +8,8 @@ import styled from 'styled-components';
 import SearchInput from './SearchInput';
 import { getUser, logout } from '../../store/actions/auth';
 import tokenService from '../../utils/tokenService';
+import KeyboardBackspaceIcon from '@material-ui/icons/KeyboardBackspace';
+import * as NextLink from 'next/link';
 
 const HeaderWrapper = styled.div`
     width: 1000px;
@@ -98,12 +100,9 @@ function Header({ router }) {
             )}
             <HeaderWrapper>
                 <div>
-                    <Link
-                        size="large"
-                        title="back"
-                        onClick={() => router.back()}
-                    />
-                    <Link href="/posts" size="large" title="posts" />
+                    <Link size="large" onClick={() => router.back()}>
+                        <KeyboardBackspaceIcon />
+                    </Link>
                 </div>
 
                 <div>
@@ -113,32 +112,24 @@ function Header({ router }) {
                 <div>
                     {!isAuth && (
                         <>
-                            <Link
-                                size="large"
-                                title="login"
-                                onClick={onOpenLoginModal}
-                            />
+                            <Link size="large" onClick={onOpenLoginModal}>
+                                login
+                            </Link>
 
-                            <Link
-                                size="large"
-                                title="signup"
-                                onClick={onOpenSignupModal}
-                            />
+                            <Link size="large" onClick={onOpenSignupModal}>
+                                signup
+                            </Link>
                         </>
                     )}
                     {isAuth && (
                         <>
-                            <Link
-                                href={`/profile/${id}`}
-                                size="large"
-                                title={`${name} ${surname}`}
-                            />
+                            <Link size="large" href={`/profile/${id}`}>
+                                {`${name} ${surname}`}
+                            </Link>
 
-                            <Link
-                                onClick={handleLogout}
-                                size="large"
-                                title="logout"
-                            />
+                            <Link size="large" onClick={handleLogout}>
+                                logout
+                            </Link>
                         </>
                     )}
                 </div>

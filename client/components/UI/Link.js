@@ -40,7 +40,6 @@ const MediumLink = styled.a`
     margin: ${MARGIN_MEDIUM};
     padding: ${PADDING_MEDIUM};
     font-weight: bold;
-
 `;
 
 const SmallLink = styled(StyledLink)`
@@ -50,30 +49,24 @@ const SmallLink = styled(StyledLink)`
     padding: ${PADDING_SMALL};
 `;
 
-function returnLinkBySize(size, title, onClick) {
+function returnLinkBySize(size, children, onClick) {
     switch (size) {
         case 'large':
-            return <LargeLink onClick={onClick}>{title}</LargeLink>;
+            return <LargeLink onClick={onClick}>{children}</LargeLink>;
         case 'medium':
-            return <MediumLink onClick={onClick}>{title}</MediumLink>;
+            return <MediumLink onClick={onClick}>{children}</MediumLink>;
         case 'small':
-            return <SmallLink onClick={onClick}>{title}</SmallLink>;
+            return <SmallLink onClick={onClick}>{children}</SmallLink>;
     }
 }
-export default function UILink({ href, size, title, as, onClick }) {
-
-    if(!href) {
-        return(
-            <>
-            {returnLinkBySize(size, title, onClick)}
-            </>
-
-        )
+export default function UILink({ href, size, as, onClick, children }) {
+    console.log(children)
+    if (!href) {
+        return returnLinkBySize(size, children, onClick)
     }
     return (
         <Link href={href} as={as} passHref>
-            {returnLinkBySize(size, title, onClick)}
+            {returnLinkBySize(size, children, onClick)}
         </Link>
-        
     );
 }
