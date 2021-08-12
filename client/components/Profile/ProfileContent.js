@@ -1,5 +1,7 @@
 import { useState } from 'react';
+import { useSelector } from 'react-redux';
 import styled from 'styled-components';
+import CreatePostCard from '../Posts/CreatePostCard';
 import PostCard from '../Posts/PostCard';
 import TopPost from '../Posts/TopPost';
 import { Button, Heading, Link } from '../UI';
@@ -37,9 +39,10 @@ const PostsGrid = styled.div`
     gap: 24px;
 `;
 
-
 export default function ProfileContent({ profile }) {
     const [currentTab, setCurrentTab] = useState(0);
+
+    const profileId = useSelector(state => state.auth.profileId);
 
     const choosenPosts = [
         profile.newestPost,
@@ -77,18 +80,20 @@ export default function ProfileContent({ profile }) {
                             </Button>
                         </TabNavigation>
                         <TabContent>
-                            <TopPost post={choosenPosts[currentTab]}/>
+                            <TopPost post={choosenPosts[currentTab]} />
                         </TabContent>
                     </>
                 )}
             <PostsCardsWrapper>
                 <Heading variant="h1">
-                    Posts: <small>{profile.posts.length} posts</small> <Link title='All posts..' href='/' size='medium' />
+                    Posts: <small>{profile.posts.length} posts</small>{' '}
+                    <Link title="All posts.." href="/" size="medium" />
                 </Heading>
                 <PostsGrid>
                     {profile.posts.map((post) => (
-                        <PostCard post={post}/>
+                        <PostCard post={post} />
                     ))}
+                    {profile.id == profileId && <CreatePostCard />}
                 </PostsGrid>
             </PostsCardsWrapper>
         </ProfileContentWrapper>

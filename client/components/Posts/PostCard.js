@@ -54,7 +54,6 @@ const StyledImage = styled(Image)`
 `;
 
 export default function PostCard({ post }) {
-    console.log(moment(post.date, "YYYYMMDD").fromNow())
     return (
         <PostCardWrapper>
             <PostInfo>
