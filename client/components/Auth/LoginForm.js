@@ -19,10 +19,10 @@ export default function LoginForm({ onClose }) {
 
     useEffect(() => {
         if (isAuth) {
-            const {modal, ...query} = router.query;
+            const { modal, ...query } = router.query;
             router.push({
                 pathname: router.pathname,
-                query: query
+                query: query,
             });
         }
     }, [isAuth]);
@@ -114,7 +114,9 @@ export default function LoginForm({ onClose }) {
                 <LockOpenIcon />
             </>
 
-            <Link size="small" href="/" title="Forgot password?" />
+            <Link size="small" href="/">
+                Forgot password?
+            </Link>
 
             <Button fullWidth type="submit" onClick={handleSubmit}>
                 {!loading && 'Log in'}

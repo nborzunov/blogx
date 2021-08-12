@@ -92,18 +92,17 @@ export default function UserCard({
                     </MenuButton>
                     <Menu className="menu">
                         {isAuthor && (
-                            <Link
-                                size="small"
-                                title={isFollowing ? 'Unfollow' : 'Follow'}
-                                onClick={handleFollow}
-                            />
+                            <Link size="small" onClick={handleFollow}>
+                                {isFollowing ? 'Unfollow' : 'Follow'}
+                            </Link>
                         )}
 
                         <Link
                             size="small"
-                            title="View Profile"
                             href={`/profile/${profile.user._id}`}
-                        />
+                        >
+                            View Profile
+                        </Link>
                     </Menu>
                 </MenuWrapper>
             </Body>

@@ -63,16 +63,13 @@ export default function PostCard({ post }) {
 
                 <PostInfoDate>
                     <Heading variant="h6">
-                        {moment(post.date, "YYYYMMDD").fromNow()}
+                        {moment(post.date, 'YYYYMMDD').fromNow()}
                     </Heading>
                 </PostInfoDate>
 
-                <Link
-                    src="/"
-                    title="Read more.."
-                    href={`/post/${post._id}`}
-                    size="small"
-                />
+                <Link src="/" href={`/post/${post._id}`} size="small">
+                    Read more..
+                </Link>
             </PostInfo>
             <StyledImage src={post.previewImage} width={150} height={140} />
         </PostCardWrapper>

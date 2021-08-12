@@ -72,7 +72,7 @@ const InfoBox = styled.div`
     justify-content: space-between;
     & > div {
         display: flex;
-        flex-direction: row
+        flex-direction: row;
     }
     column-gap: 12px;
     & * {
@@ -147,12 +147,12 @@ export default function TopPost({ post, setPost, isPreview = false }) {
     }, [post.previewImage]);
 
     async function likePost() {
-        const res = await postAPI.likePost(post._id)
+        const res = await postAPI.likePost(post._id);
 
         setPost(res.data);
     }
     async function dislikePost() {
-        const res = await postAPI.dislikePost(post._id)
+        const res = await postAPI.dislikePost(post._id);
 
         setPost(res.data);
     }
@@ -169,40 +169,41 @@ export default function TopPost({ post, setPost, isPreview = false }) {
             )}
             {post.liked && (
                 <InfoBox>
-                <div>
-                    <ButtonWrapper>
-                        <Button
-                            variant="icon"
-                            onClick={likePost}
-                            active={post.liked.includes(id)}
-                        >
-                            <ThumbUpIcon />
-                        </Button>
-                        <div className="text">{post.liked.length} likes</div>
-                    </ButtonWrapper>
-                    <ButtonWrapper>
-                        <Button
-                            variant="icon"
-                            onClick={dislikePost}
-                            active={post.disliked.includes(id)}
-                        >
-                            <ThumbDownIcon />
-                        </Button>
-                        <div className="text">
-                            {post.disliked.length} dislikes
-                        </div>
-                    </ButtonWrapper>
-                </div>
+                    <div>
+                        <ButtonWrapper>
+                            <Button
+                                variant="icon"
+                                onClick={likePost}
+                                active={post.liked.includes(id)}
+                            >
+                                <ThumbUpIcon />
+                            </Button>
+                            <div className="text">
+                                {post.liked.length} likes
+                            </div>
+                        </ButtonWrapper>
+                        <ButtonWrapper>
+                            <Button
+                                variant="icon"
+                                onClick={dislikePost}
+                                active={post.disliked.includes(id)}
+                            >
+                                <ThumbDownIcon />
+                            </Button>
+                            <div className="text">
+                                {post.disliked.length} dislikes
+                            </div>
+                        </ButtonWrapper>
+                    </div>
 
-                <ButtonWrapper>
-                    <ViewWrapper>
-                        <VisibilityIcon />
-                    </ViewWrapper>
-                    <div className="text">{post.views} views</div>
-                </ButtonWrapper>
-            </InfoBox>
+                    <ButtonWrapper>
+                        <ViewWrapper>
+                            <VisibilityIcon />
+                        </ViewWrapper>
+                        <div className="text">{post.views} views</div>
+                    </ButtonWrapper>
+                </InfoBox>
             )}
-
 
             <MainPostInfoContent>
                 <Heading variant="h1">{post.title}</Heading>
@@ -210,11 +211,9 @@ export default function TopPost({ post, setPost, isPreview = false }) {
                 <Heading variant="h2">{post.subtitle}</Heading>
 
                 {!isPreview && (
-                    <Link
-                        title="Read more.."
-                        href={`/post/${post._id}`}
-                        size="medium"
-                    />
+                    <Link href={`/post/${post._id}`} size="medium">
+                        Read more..
+                    </Link>
                 )}
             </MainPostInfoContent>
         </MainPostWrapper>

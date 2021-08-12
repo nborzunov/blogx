@@ -124,9 +124,7 @@ export default function SignupForm({ onClose, onOpenLoginModal }) {
 
             <>
                 <Error>
-                    {touched.surname && errors.surname
-                        ? errors.surname
-                        : ''}
+                    {touched.surname && errors.surname ? errors.surname : ''}
                 </Error>
                 <Input
                     type="text"
@@ -183,11 +181,9 @@ export default function SignupForm({ onClose, onOpenLoginModal }) {
                 <LockOpenIcon />
             </>
 
-            <Link
-                size="small"
-                title="Already have an account? Sign in"
-                onClick={handleLoginClick}
-            />
+            <Link size="small" onClick={handleLoginClick}>
+                Already have an account? Sign in
+            </Link>
 
             <Button fullWidth type="submit" onClick={handleSubmit}>
                 {loading ? <Spinner /> : 'Sign Up'}
