@@ -1,6 +1,5 @@
 import { useFormik } from 'formik';
 import { createRef } from 'react';
-import { useDispatch } from 'react-redux';
 import styled from 'styled-components';
 import * as Yup from 'yup';
 import {
@@ -11,10 +10,10 @@ import {
     Input,
     TextField,
 } from '../../components/UI';
-import { createPost } from '../../store/actions/posts';
 import Layout from './../../components/Layout/Layout';
 import TopPost from './../../components/Posts/TopPost';
 import PostContent from './../../components/Posts/PostContent';
+import * as postAPI from '../../api/PostAPI/PostAPI';
 
 const EditWrapper = styled.div`
     width: 1000px;
@@ -46,8 +45,6 @@ const PreviewWrapper = styled.div`
 `;
 
 export default function ProfilePage(props) {
-    const dispatch = useDispatch();
-
     const formRef = createRef();
 
     const {
@@ -80,9 +77,7 @@ export default function ProfilePage(props) {
             body: Yup.string().required('Body is required'),
         }),
         onSubmit: async (values) => {
-            const result = await dispatch(
-                createPost(new FormData(formRef.current))
-            );
+            const result = await postAPI.createPost(new FormData(formRef.current))
         },
     });
 
