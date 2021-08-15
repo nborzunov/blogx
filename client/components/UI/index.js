@@ -9,7 +9,6 @@ import Error from './Error';
 import Spinner from './Spinner';
 import Avatar from './Avatar';
 import TextField from './TextField';
-import FileUpload from './FileUpload';
 
 export {
     Link,
@@ -22,6 +21,5 @@ export {
     Error,
     Spinner,
     Avatar,
-    TextField,
-    FileUpload
+    TextField
 }

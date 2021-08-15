@@ -60,7 +60,6 @@ function returnLinkBySize(size, children, onClick) {
     }
 }
 export default function UILink({ href, size, as, onClick, children }) {
-    console.log(children)
     if (!href) {
         return returnLinkBySize(size, children, onClick)
     }

@@ -107,6 +107,8 @@ router.put(
         );
 
         profile.save();
+        
+        res.status(200).send(profile);
       }
     } catch (err) {
       console.error(err.message);

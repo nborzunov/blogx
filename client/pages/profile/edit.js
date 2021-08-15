@@ -1,212 +1,279 @@
-import * as Yup from 'yup';
-import styled from 'styled-components';
-import { createRef } from 'react';
-import { useSelector } from 'react-redux';
+import { useState } from 'react';
 import { useFormik } from 'formik';
-import { useDispatch } from 'react-redux';
-import {
-    Button,
-    FileUpload,
-    Form,
-    Heading,
-    Input,
-    TextField,
-} from '../../components/UI';
-import { updateProfile } from '../../store/actions/profile';
+import { Spinner } from '../../components/UI';
 import Layout from '../../components/Layout/Layout';
 import TwitterIcon from '@material-ui/icons/Twitter';
 import FacebookIcon from '@material-ui/icons/Facebook';
 import InstagramIcon from '@material-ui/icons/Instagram';
 import LanguageIcon from '@material-ui/icons/Language';
 import * as profileAPI from '../../api/ProfileAPI/ProfileAPI';
-
-const EditWrapper = styled.div`
-    width: 1000px;
-    & form {
-        margin: 0;
-        max-width: 100%;
-        box-shadow: none;
-        & > * {
-            margin: 16px 0;
-        }
-        & > input {
-            width: 100%;
-        }
-        & > textarea {
-            width: 100%;
-            min-height: 200px;
-            height: auto;
-        }
-        & > button {
-            margin-left: 20px;
-            margin-bottom: 24px;
-        }
-    }
-`;
-
-const SocialBox = styled.div`
-    & > input {
-        width: 100%;
-    }
-`;
-
+import {
+    Input as ChakraInput,
+    InputGroup,
+    Stack,
+    InputLeftAddon,
+    Flex,
+    Box,
+    Textarea,
+    Button,
+    Heading,
+    useToast,
+    Container,
+} from '@chakra-ui/react';
 export default function EditProfilePage({ profileData }) {
-    const dispatch = useDispatch();
+    const toast = useToast();
 
-    const { isAuth } = useSelector((state) => state.auth);
+    const [loading, setLoading] = useState(false);
 
-    const formRef = createRef();
+    const { handleSubmit, handleChange, values, setValues, handleBlur } =
+        useFormik({
+            initialValues: {
+                age: profileData.age ? profileData.age : '',
+                country: profileData.country ? profileData.country : '',
+                city: profileData.city ? profileData.city : '',
+                avatar: '',
+                aboutme: profileData.aboutme ? profileData.aboutme : '',
+                twitter: profileData.twitter ? profileData.twitter : '',
+                facebook: profileData.facebook ? profileData.facebook : '',
+                instagram: profileData.instagram ? profileData.instagram : '',
+                website: profileData.website ? profileData.website : '',
+            },
+            onSubmit: async (values) => {
+                setLoading(true);
+                let formData = new FormData();
 
-    const {
-        handleSubmit,
-        handleChange,
-        values,
-        setValues,
-        touched,
-        errors,
-        setErrors,
-        handleBlur,
-    } = useFormik({
-        initialValues: {
-            age: profileData.age ? profileData.age : '',
-            country: profileData.country ? profileData.country : '',
-            city: profileData.city ? profileData.city : '',
-            avatar: '',
-            aboutme: profileData.aboutme ? profileData.aboutme : '',
-            twitter: profileData.twitter ? profileData.twitter : '',
-            facebook: profileData.facebook ? profileData.facebook : '',
-            instagram: profileData.instagram ? profileData.instagram : '',
-            website: profileData.website ? profileData.website : '',
-        },
-        validationSchema: Yup.object({
-            // title: Yup.string()
-            //     .required('Title is required')
-            //     .max(50, 'Too Long!'),
-            // keywords: Yup.string()
-            //     .required('Keywords are required')
-            //     .max(50, 'Too Long!'),
-            // subtitle: Yup.string()
-            //     .required('Subtitle is required')
-            //     .max(200, 'Too Long!'),
-            // body: Yup.string().required('Body is required'),
-        }),
-        onSubmit: async (values) => {
-            const res = await profileAPI.updateProfile(
-                new FormData(formRef.current)
-            );
-        },
-    });
+                for (let value in values) {
+                    formData.append(value, values[value]);
+                }
+                const res = await profileAPI.updateProfile(formData);
+
+                setLoading(false);
+
+                if (res.status === 200) {
+                    return toast({
+                        title: 'Profile has been successfully updated',
+                        status: 'success',
+                        position: 'bottom',
+                        duration: 3000,
+                        isClosable: true,
+                    });
+                } else {
+                    return toast({
+                        title: 'Something went wrong',
+                        status: 'error',
+                        position: 'bottom',
+                        duration: 3000,
+                        isClosable: true,
+                    });
+                }
+            },
+        });
 
     return (
         <Layout title="Edit profile">
-            <EditWrapper>
-                <Heading variant="h1">Edit Profile</Heading>
-                <Form onSubmit={handleSubmit} ref={formRef}>
-                    <Input
-                        placeholder="Age"
-                        name="age"
-                        value={values.age}
-                        onChange={handleChange}
-                        autocomplete="off"
-                    />
-                    <Input
-                        placeholder="Country"
-                        name="country"
-                        value={values.country}
-                        onChange={handleChange}
-                    />
-                    <Input
-                        placeholder="City"
-                        name="city"
-                        value={values.city}
-                        onChange={handleChange}
-                    />
+            <Container minWidth="1000px" padding="24px">
+                <Stack spacing={4}>
+                    <Heading size="lg" color="gray.700">
+                        Edit Profile
+                    </Heading>
+                    <Stack spacing={4}>
+                        <InputGroup>
+                            <InputLeftAddon
+                                children="Age"
+                                width="90px"
+                                padding={4}
+                            />
+                            <ChakraInput
+                                name="age"
+                                value={values.age}
+                                onChange={handleChange}
+                                autoComplete="off"
+                                focusBorderColor="light.primary"
+                            />
+                        </InputGroup>
 
-                    <Heading variant="h1">Avatar</Heading>
+                        <InputGroup>
+                            <InputLeftAddon
+                                children="Country"
+                                width="90px"
+                                padding={4}
+                            />
+                            <ChakraInput
+                                name="country"
+                                value={values.country}
+                                onChange={handleChange}
+                                autoComplete="off"
+                                focusBorderColor="light.primary"
+                            />
+                        </InputGroup>
 
-                    <FileUpload
-                        name="avatar"
-                        value={values.avatar.src}
-                        title="Update avatar"
-                        onChange={(e) =>
-                            setValues({
-                                ...values,
-                                avatar: e.target.files[0],
-                            })
-                        }
-                    />
+                        <InputGroup>
+                            <InputLeftAddon
+                                children="City"
+                                width="90px"
+                                padding={4}
+                            />
+                            <ChakraInput
+                                name="city"
+                                value={values.city}
+                                onChange={handleChange}
+                                autoComplete="off"
+                                focusBorderColor="light.primary"
+                            />
+                        </InputGroup>
 
-                    <Heading variant="h1">Socials</Heading>
+                        <InputGroup>
+                            <InputLeftAddon
+                                children="Avatar"
+                                width="90px"
+                                padding={4}
+                            />
+                            <ChakraInput
+                                autoComplete="off"
+                                focusBorderColor="light.primary"
+                                type="file"
+                                py={1}
+                                name="avatar"
+                                value={values.avatar.src}
+                                onChange={(e) =>
+                                    setValues({
+                                        ...values,
+                                        avatar: e.target.files[0],
+                                    })
+                                }
+                            />
+                        </InputGroup>
+                    </Stack>
 
-                    <SocialBox>
-                        <Input
-                            type="text"
-                            placeholder="Twitter, e.g. twitter.com/blogx"
-                            name="twitter"
-                            withIcon="true"
-                            value={values.twitter}
-                            onChange={handleChange}
-                            onBlur={handleBlur}
-                            // error={touched.email && errors.email ? errors.email : null}
-                        />
-                        <TwitterIcon />
-                    </SocialBox>
+                    <Heading size="lg" color="gray.700">
+                        Socials
+                    </Heading>
 
-                    <SocialBox>
-                        <Input
-                            type="text"
-                            placeholder="Facebook, e.g. facebook.com/blogx"
-                            name="facebook"
-                            withIcon="true"
-                            value={values.facebook}
-                            onChange={handleChange}
-                            onBlur={handleBlur}
-                            // error={touched.email && errors.email ? errors.email : null}
-                        />
-                        <FacebookIcon />
-                    </SocialBox>
+                    <Stack spacing={3}>
+                        <InputGroup>
+                            <InputLeftAddon>
+                                <Box width="200px">
+                                    <Flex columns={2}>
+                                        <Box p={1}>
+                                            <TwitterIcon />
+                                        </Box>
+                                        <Box p={1}>
+                                            <div>https://twitter.com/</div>
+                                        </Box>
+                                    </Flex>
+                                </Box>
+                            </InputLeftAddon>
 
-                    <SocialBox>
-                        <Input
-                            type="text"
-                            placeholder="Instagram, e.g. instagram.com/blogx"
-                            name="instagram"
-                            withIcon="true"
-                            value={values.instagram}
-                            onChange={handleChange}
-                            onBlur={handleBlur}
-                            // error={touched.email && errors.email ? errors.email : null}
-                        />
-                        <InstagramIcon />
-                    </SocialBox>
+                            <ChakraInput
+                                name="twitter"
+                                value={values.twitter}
+                                onChange={handleChange}
+                                onBlur={handleBlur}
+                                autoComplete="off"
+                                focusBorderColor="light.primary"
+                            />
+                        </InputGroup>
 
-                    <SocialBox>
-                        <Input
-                            type="text"
-                            placeholder="Website, e.g. mywebsite.com"
-                            name="website"
-                            withIcon="true"
-                            value={values.website}
-                            onChange={handleChange}
-                            onBlur={handleBlur}
-                            // error={touched.email && errors.email ? errors.email : null}
-                        />
-                        <LanguageIcon />
-                    </SocialBox>
+                        <InputGroup>
+                            <InputLeftAddon>
+                                <Box width="200px">
+                                    <Flex columns={2}>
+                                        <Box p={1}>
+                                            <FacebookIcon />
+                                        </Box>
+                                        <Box p={1}>
+                                            <div>https://facebook.com/</div>
+                                        </Box>
+                                    </Flex>
+                                </Box>
+                            </InputLeftAddon>
 
-                    <Heading variant="h1">About me</Heading>
-                    <TextField
+                            <ChakraInput
+                                name="facebook"
+                                value={values.facebook}
+                                onChange={handleChange}
+                                onBlur={handleBlur}
+                                autoComplete="off"
+                                focusBorderColor="light.primary"
+                            />
+                        </InputGroup>
+
+                        <InputGroup>
+                            <InputLeftAddon>
+                                <Box width="200px">
+                                    <Flex columns={2}>
+                                        <Box p={1}>
+                                            <InstagramIcon />
+                                        </Box>
+                                        <Box p={1}>
+                                            <div>https://instagram.com/</div>
+                                        </Box>
+                                    </Flex>
+                                </Box>
+                            </InputLeftAddon>
+
+                            <ChakraInput
+                                name="instagram"
+                                value={values.instagram}
+                                onChange={handleChange}
+                                onBlur={handleBlur}
+                                autoComplete="off"
+                                focusBorderColor="light.primary"
+                            />
+                        </InputGroup>
+
+                        <InputGroup>
+                            <InputLeftAddon>
+                                <Box width="200px">
+                                    <Flex columns={2}>
+                                        <Box p={1}>
+                                            <LanguageIcon />
+                                        </Box>
+                                        <Box p={1}>
+                                            <div>https://</div>
+                                        </Box>
+                                    </Flex>
+                                </Box>
+                            </InputLeftAddon>
+
+                            <ChakraInput
+                                placeholder="Website, e.g. mywebsite.com"
+                                name="website"
+                                value={values.website}
+                                onChange={handleChange}
+                                onBlur={handleBlur}
+                                autoComplete="off"
+                                focusBorderColor="light.primary"
+                            />
+                        </InputGroup>
+                    </Stack>
+
+                    <Heading size="lg" color="gray.700">
+                        About me
+                    </Heading>
+
+                    <Textarea
                         placeholder="About me.."
                         name="aboutme"
+                        resize="vertical"
                         value={values.aboutme}
                         onChange={handleChange}
+                        autoComplete="off"
+                        focusBorderColor="light.primary"
                     />
-
-                    <Button variant="submit" type="submit">
-                        Update profile
-                    </Button>
-                </Form>
-            </EditWrapper>
+                    <Box p={0} m={0}>
+                        <Button
+                            isLoading={loading}
+                            spinner={<Spinner />}
+                            variant="submit"
+                            onClick={handleSubmit}
+                            isFullWidth={false}
+                        >
+                            Update profile
+                        </Button>
+                    </Box>
+                </Stack>
+            </Container>
         </Layout>
     );
 }

@@ -1,6 +1,9 @@
 import axios from 'axios';
 
 export async function getCurrentProfile(token) {
+    if (!token) {
+        return await axios.get(`http://localhost:4000/profile`);
+    }
     return await axios.get(`http://localhost:4000/profile`, {
         headers: {
             'x-auth-token': token,
@@ -27,7 +30,9 @@ export async function getProfileWithPosts(userId) {
 export async function getProfileWithComments() {}
 
 export async function toggleFollow(userId) {
-    return await axios.patch(`http://localhost:4000/profile/${userId}/togglefollow`)
+    return await axios.patch(
+        `http://localhost:4000/profile/${userId}/togglefollow`
+    );
 }
 
 export async function updateProfile(formData) {
