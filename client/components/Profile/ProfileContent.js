@@ -5,6 +5,7 @@ import CreatePostCard from '../Posts/CreatePostCard';
 import PostCard from '../Posts/PostCard';
 import TopPost from '../Posts/TopPost';
 import { Button, Heading, Link } from '../UI';
+import { Tabs, TabList, TabPanels, Tab, TabPanel } from '@chakra-ui/react';
 
 const ProfileContentWrapper = styled.div`
     width: 100%;
@@ -19,11 +20,12 @@ const ProfileContentWrapper = styled.div`
 `;
 
 const TabNavigation = styled.div`
-    margin: 16px 24px;
+    margin: 16px 16px;
+    margin-bottom: 0;
 `;
 
 const TabContent = styled.div`
-    margin: 0 24px;
+    margin: 0;
     & img {
         height: 350px;
     }
@@ -40,15 +42,7 @@ const PostsGrid = styled.div`
 `;
 
 export default function ProfileContent({ profile }) {
-    const [currentTab, setCurrentTab] = useState(0);
-
     const profileId = useSelector((state) => state.auth.profileId);
-
-    const choosenPosts = [
-        profile.newestPost,
-        profile.mostLikedPost,
-        profile.mostPopularPost,
-    ];
 
     return (
         <ProfileContentWrapper>
@@ -56,32 +50,29 @@ export default function ProfileContent({ profile }) {
                 profile.mostLikedPost &&
                 profile.mostPopularPost && (
                     <>
-                        <TabNavigation>
-                            <Button
-                                variant="tab"
-                                active={currentTab === 0}
-                                onClick={(e) => setCurrentTab(0)}
-                            >
-                                Newest Post
-                            </Button>
-                            <Button
-                                variant="tab"
-                                active={currentTab === 1}
-                                onClick={(e) => setCurrentTab(1)}
-                            >
-                                Most Liked Post
-                            </Button>
-                            <Button
-                                variant="tab"
-                                active={currentTab === 2}
-                                onClick={(e) => setCurrentTab(2)}
-                            >
-                                Most Popular Post
-                            </Button>
-                        </TabNavigation>
-                        <TabContent>
-                            <TopPost post={choosenPosts[currentTab]} />
-                        </TabContent>
+                        <Tabs colorScheme="purple" variant="enclosed" isFitted>
+                            <TabNavigation>
+                                <TabList>
+                                    <Tab _active={{}}>Newest Post</Tab>
+                                    <Tab>Most Liked Post</Tab>
+                                    <Tab>Most Popular Post</Tab>
+                                </TabList>
+                            </TabNavigation>
+
+                            <TabPanels>
+                                <TabPanel>
+                                    <TabContent>
+                                        <TopPost post={profile.newestPost} />
+                                    </TabContent>
+                                </TabPanel>
+                                <TabPanel>
+                                    <TopPost post={profile.mostLikedPost} />
+                                </TabPanel>
+                                <TabPanel>
+                                    <TopPost post={profile.mostPopularPost} />
+                                </TabPanel>
+                            </TabPanels>
+                        </Tabs>
                     </>
                 )}
             <PostsCardsWrapper>

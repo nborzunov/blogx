@@ -1,22 +1,32 @@
 import React, { useEffect } from 'react';
 import { withRouter } from 'next/router';
 import { useSelector, useDispatch } from 'react-redux';
-import { Link, Modal, Container, Input } from '../UI';
+import { Link, Modal, Container } from '../UI';
 import LoginForm from '../Auth/LoginForm';
 import SignupForm from '../Auth/SignupForm';
 import styled from 'styled-components';
 import SearchInput from './SearchInput';
-import { getUser, logout } from '../../store/actions/auth';
+import { getUser } from '../../store/actions/auth';
 import tokenService from '../../utils/tokenService';
 import KeyboardBackspaceIcon from '@material-ui/icons/KeyboardBackspace';
-import * as NextLink from 'next/link';
+import {
+    Menu,
+    MenuButton,
+    MenuList,
+    MenuItem,
+    MenuGroup,
+    IconButton,
+    MenuDivider
+} from '@chakra-ui/react';
+import { HamburgerIcon } from '@chakra-ui/icons';
+import NextLink from 'next/link';
+import LogoutButton from './LogoutButton';
 
 const HeaderWrapper = styled.div`
     width: 1000px;
-    height: 100px;
     display: flex;
     justify-content: space-between;
-    align-items: baseline;
+    align-items: center;
     max-width: 1200px;
     margin: auto;
     background: white;
@@ -25,7 +35,11 @@ const HeaderWrapper = styled.div`
     left: 50%;
     transform: translateX(-50%);
     z-index: 950;
-    border-bottom: 1px solid rgba(0, 0, 0, 0.25);
+    padding: 12px;
+    border-bottom: 1px solid rgba(0, 0, 0, 0.15);
+    & a {
+        margin: 0;
+    }
 `;
 
 function Header({ router }) {
@@ -42,6 +56,7 @@ function Header({ router }) {
             query: query,
         });
     }
+
     function onOpenLoginModal() {
         router.push({
             pathname: router.pathname,
@@ -54,23 +69,6 @@ function Header({ router }) {
             pathname: router.pathname,
             query: { ...router.query, modal: 'signup' },
         });
-    }
-
-    function onSearchSubmit(e) {
-        e.preventDefault();
-
-        router.push({
-            pathname: '/search/',
-            query: {
-                query: e.target[0].children[0].value,
-                page: 1,
-                type: 'posts',
-            },
-        });
-    }
-
-    function handleLogout() {
-        dispatch(logout());
     }
 
     let token = null;
@@ -99,36 +97,59 @@ function Header({ router }) {
                 </Modal>
             )}
             <HeaderWrapper>
-                <div>
-                    <Link size="large" onClick={() => router.back()}>
-                        <KeyboardBackspaceIcon />
-                    </Link>
-                </div>
+                <IconButton
+                    icon={<KeyboardBackspaceIcon />}
+                    onClick={() => router.back()}
+                    variant="outline"
+                />
+
+                <SearchInput />
 
                 <div>
-                    <SearchInput onSubmit={onSearchSubmit} />
-                </div>
+                    {isAuth && (
+                        <Link size="large" href={`/profile/${id}`}>
+                            {`${name} ${surname}`}
+                        </Link>
+                    )}
+                    {isAuth && (
+                        <Menu>
+                            <MenuButton
+                                icon={<HamburgerIcon />}
+                                as={IconButton}
+                                aria-label="Options"
+                                variant="outline"
+                            />
+                            <MenuList>
+                                <MenuGroup title="Profile">
+                                    <NextLink href="/profile/edit">
+                                        <MenuItem>Edit</MenuItem>
+                                    </NextLink>
+                                </MenuGroup>
 
-                <div>
+                                <MenuDivider />
+
+                                <MenuGroup title="Settings">
+                                    <MenuItem>Theme..</MenuItem>
+                                    <MenuItem>Language..</MenuItem>
+                                </MenuGroup>
+
+                                <MenuDivider />
+                                
+                                <MenuGroup title="Auth">
+                                    <MenuItem closeOnSelect={false}>
+                                        <LogoutButton />
+                                    </MenuItem>
+                                </MenuGroup>
+                            </MenuList>
+                        </Menu>
+                    )}
                     {!isAuth && (
                         <>
                             <Link size="large" onClick={onOpenLoginModal}>
-                                login
+                                Login
                             </Link>
-
                             <Link size="large" onClick={onOpenSignupModal}>
-                                signup
-                            </Link>
-                        </>
-                    )}
-                    {isAuth && (
-                        <>
-                            <Link size="large" href={`/profile/${id}`}>
-                                {`${name} ${surname}`}
-                            </Link>
-
-                            <Link size="large" onClick={handleLogout}>
-                                logout
+                                Signup
                             </Link>
                         </>
                     )}

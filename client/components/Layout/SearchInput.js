@@ -1,5 +1,12 @@
 import styled from 'styled-components';
 
+const SearchBoxContainer = styled.form`
+    position: absolute;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 310px;
+    height: 52px;
+`;
 const InputWrapper = styled.fieldset`
     position: relative;
     padding: 0;
@@ -7,7 +14,6 @@ const InputWrapper = styled.fieldset`
     border: 0;
     width: 270px;
     height: 32px;
-
     @keyframes color-1 {
         0% {
             background-color: #eb73b9;
@@ -160,9 +166,21 @@ const IconXDown = styled.div`
     }
 `;
 
-export default function SearchInput({ onSubmit }) {
+export default function SearchInput() {
+    function onSearchSubmit(e) {
+        e.preventDefault();
+
+        router.push({
+            pathname: '/search/',
+            query: {
+                query: e.target[0].children[0].value,
+                page: 1,
+                type: 'posts',
+            },
+        });
+    }
     return (
-        <form onSubmit={onSubmit}>
+        <SearchBoxContainer onSubmit={onSearchSubmit}>
             <InputWrapper name="input">
                 <Input type="text" placeholder="Search..." />
                 <IconContainer className="icons-container">
@@ -173,6 +191,6 @@ export default function SearchInput({ onSubmit }) {
                     </IconClose>
                 </IconContainer>
             </InputWrapper>
-        </form>
+        </SearchBoxContainer>
     );
 }

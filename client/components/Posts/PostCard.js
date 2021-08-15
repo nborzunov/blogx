@@ -50,7 +50,6 @@ const StyledImage = styled(Image)`
     background: red;
     object-fit: cover;
     -webkit-filter: brightness(90%);
-    z-index: 1000;
 `;
 
 export default function PostCard({ post }) {
