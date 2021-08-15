@@ -1,18 +1,16 @@
-import CssBaseline from '@material-ui/core/CssBaseline';
-import { ThemeProvider } from '@material-ui/core/styles';
 import axios from 'axios';
 import { createWrapper } from 'next-redux-wrapper';
 import Head from 'next/head';
 import React, { useEffect } from 'react';
 import { Provider } from 'react-redux';
-import theme from '../utils/theme';
 import store from './../store/store';
 import setAuthToken from '../utils/setAuthToken';
-import '../styles/globals.css';
 import { useRouter } from 'next/router';
 import { pageview } from '../utils/gtag';
 import ErrorBoundary from '../components/ErrorBoundary/ErrorBoundary';
 import tokenService from '../utils/tokenService';
+import { ChakraProvider } from '@chakra-ui/react';
+import theme from '../utils/theme';
 
 function MyApp(props) {
     const { Component, pageProps } = props;
@@ -49,14 +47,14 @@ function MyApp(props) {
                     content="minimum-scale=1, initial-scale=1, width=device-width"
                 />
             </Head>
-            <ThemeProvider theme={theme}>
-                <CssBaseline />
-                <Provider store={store}>
-                    <ErrorBoundary>
+
+            <Provider store={store}>
+                <ErrorBoundary>
+                    <ChakraProvider theme={theme}>
                         <Component {...pageProps} />
-                    </ErrorBoundary>
-                </Provider>
-            </ThemeProvider>
+                    </ChakraProvider>
+                </ErrorBoundary>
+            </Provider>
         </React.Fragment>
     );
 }

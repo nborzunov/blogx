@@ -1,22 +1,57 @@
-import { createMuiTheme } from '@material-ui/core/styles';
-import { red } from '@material-ui/core/colors';
+import { extendTheme } from '@chakra-ui/react';
 
-// Create a theme instance.
-const theme = createMuiTheme({
-  palette: {
-    primary: {
-      main: '#556cd6',
+const theme = extendTheme({
+    styles: {
+        global: {
+            'html, body': {
+                padding: 0,
+                margin: 0,
+                fontSize: '16px',
+                position: 'relative',
+                fontFamily: `'Roboto', sans-serif !important`,
+            },
+            body: {
+                maxWidth: '100vw',
+                maxHeight: '100vh',
+                overflow: 'hidden',
+                overflowY: 'scroll',
+            },
+            '*': {
+                boxSizing: 'border-box',
+            },
+        },
     },
-    secondary: {
-      main: '#19857b',
+    colors: {
+        light: {
+            primary: '#2196F3',
+            secondary: '#6C44FC',
+            blue: '#2196F3',
+            gray: '#001D4A',
+        },
     },
-    error: {
-      main: red.A400,
+    components: {
+        Button: {
+            variants: {
+                submit: (props) => ({
+                    bg:
+                        props.colorMode === 'dark'
+                            ? 'light.primary'
+                            : 'light.primary',
+                    color: 'white',
+                    _hover: {
+                        opacity: 0.8,
+                        _disabled: {
+                            bg: 'light.primary',
+                            opacity: 0.8,
+                        },
+                    },
+                    _disabled: {
+                        opacity: 0.8,
+                    },
+                }),
+            },
+        },
     },
-    background: {
-      default: '#fff',
-    },
-  },
 });
 
 export default theme;
