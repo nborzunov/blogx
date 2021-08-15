@@ -1,6 +1,6 @@
 import styled from 'styled-components';
 import Head from 'next/head';
-import { Container } from '../UI';
+import { Flex } from '@chakra-ui/react';
 import Footer from './Footer';
 import Header from './Header';
 
@@ -17,21 +17,23 @@ const SectionWrapper = styled.div`
 `;
 const ContentWrapper = styled.div`
     margin-top: 100px;
-`
+    min-height: calc(100vh - 285px);
+`;
 export default function Layout({ title, description, children }) {
     return (
         <>
             <Head>
                 <title>{title}</title>
             </Head>
-            <Container
-                maxWidth="fullWidth"
+            <Flex
+                minWidth="100%"
+                minHeight="100vh"
                 flexDirection="column"
                 alignItems="center"
+                p="0"
             >
                 <Header />
                 <ContentWrapper>
-                <Container maxWidth="md">
                     {!Array.isArray(children) ? (
                         <SectionWrapper>{children}</SectionWrapper>
                     ) : (
@@ -43,11 +45,10 @@ export default function Layout({ title, description, children }) {
                             ))}
                         </>
                     )}
-                </Container>
                 </ContentWrapper>
-                
+
                 <Footer />
-            </Container>
+            </Flex>
         </>
     );
 }
